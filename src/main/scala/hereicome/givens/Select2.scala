@@ -33,7 +33,7 @@ object Select2 {
     type Out = A
     def (x: IndexedSeq[A]) select (selector: B) given (S: Selector[B, Int]): Option[A] = {
       val index = S.value(selector)
-      if (index >= 0 && index < x.length) Some(x(index)) else None
+      if index >= 0 && index < x.length then Some(x(index)) else None
     }
   }
 

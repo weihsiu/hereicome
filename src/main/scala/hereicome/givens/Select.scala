@@ -9,7 +9,7 @@ object Select {
   given [A] as Select[IndexedSeq[A], Int] {
     type Out = A
     def (x: IndexedSeq[A]) select (selector: Int): Option[A] =
-      if (x.length > selector) Some(x(selector)) else None
+      if x.length > selector then Some(x(selector)) else None
   }
 
   given [A, B] as Select[Map[A, B], A] {

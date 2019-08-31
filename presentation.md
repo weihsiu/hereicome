@@ -1,10 +1,12 @@
 ---
-marp: true
+marp: false
 ---
-# Scala 3, here i come!
+# Scala 3, Here I Come!
+## 張瑋修 Walter Chang
+### @weihsiu / weihsiu@gmail.com
 
 ---
-# Slide 1
+# Agenda
 - Foo
 ___
 # Slide 2
