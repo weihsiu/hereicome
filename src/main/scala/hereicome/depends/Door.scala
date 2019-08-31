@@ -29,3 +29,10 @@ def doCommand[S <: DoorState](state: S, command: DoorCommand[S]): command.NextSt
 val s1 = doCommand(new IsOpen, Close)
 val s2 = doCommand(s1, RingBell)
 val s3 = doCommand(s2, Open)
+
+def execute[S <: DoorState](command: DoorCommand[S])(state: S): command.NextState =
+  doCommand(state, command)
+
+import given hereicome._
+
+val _ = new IsOpen |> execute(Close) |> execute(RingBell) |> execute(Open)
