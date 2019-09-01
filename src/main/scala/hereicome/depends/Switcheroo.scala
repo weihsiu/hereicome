@@ -21,7 +21,3 @@ def switcheroo[A](x: A) given (S: Switcheroo[A]): S.Type = S(x)
 
 val r1: Boolean = switcheroo(0)
 val r2: Int = switcheroo(r1)
-
-// def switcherloop[A](n: Int, x: A) given(S: Switcheroo[A]): S.Type = {
-//   if n == 0 then x else if n % 2 == 0 then switcherloop(n - 1, S(x))
-// }
