@@ -7,6 +7,7 @@ scalaVersion := dottyVersion
 scalacOptions ++= Seq(
   "-language:implicitConversions"
 )
+
 libraryDependencies ++= Seq(
   ("org.typelevel" %% "cats-core" % "2.0.0-RC2").withDottyCompat(scalaVersion.value)
 )
