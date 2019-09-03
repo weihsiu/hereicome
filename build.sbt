@@ -9,5 +9,6 @@ scalacOptions ++= Seq(
 )
 
 libraryDependencies ++= Seq(
-  ("org.typelevel" %% "cats-core" % "2.0.0-RC2").withDottyCompat(scalaVersion.value)
+  ("org.typelevel" %% "cats-core" % "2.0.0-RC2").withDottyCompat(scalaVersion.value),
+  ("org.typelevel" %% "cats-effect" % "2.0.0-RC2").withDottyCompat(scalaVersion.value)
 )
