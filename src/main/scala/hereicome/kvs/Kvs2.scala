@@ -3,6 +3,9 @@ package hereicome.kvs
 import cats._
 import cats.effect._
 import cats.implicits._
+import java.net.Socket
+import java.util.concurrent.Executors
+import scala.concurrent.ExecutionContext
 import scala.collection.mutable
 
 object Kvs2 extends App {
@@ -22,14 +25,56 @@ object Kvs2 extends App {
         def (x: MapKvs) del (key: Vector[Byte]) = x.remove(key)
       }
     }
+
+    case class KvsClient(host: String, port: Int)
+    object KvsClient {
+      given as Kvs[KvsClient, IO] given ContextShift[IO] {
+        import given NetIO._
+        import Protocol._
+        def (x: KvsClient) put (key: Vector[Byte], value: Vector[Byte]) = for {
+          s <- NetIO.block(Socket(x.host, x.port))
+          _ <- s.writeByte(PUT)
+          _ <- s.writeNBytes(key)
+          _ <- s.writeNBytes(value)
+          r <- s.readByte
+          _ <- NetIO.block(s.close)
+          _ = assert(r == OK)
+        } yield ()
+        def (x: KvsClient) get (key: Vector[Byte]) = for {
+          s <- NetIO.block(Socket(x.host, x.port))
+          _ <- s.writeByte(GET)
+          _ <- s.writeNBytes(key)
+          r <- s.readByte
+          v <- if (r == Ok_NONE) IO.pure(None) else s.readNBytes.map(Some(_))
+          _ <- NetIO.block(s.close)
+        } yield v
+        def (x: KvsClient) del (key: Vector[Byte]) = for {
+          s <- NetIO.block(Socket(x.host, x.port))
+          _ <- s.writeByte(DEL)
+          _ <- s.writeNBytes(key)
+          r <- s.readByte
+          _ <- NetIO.block(s.close)
+          _ = assert(r == OK)
+        } yield ()
+      }
+    }
   }
 
   def putGetDel[A, F[_]](x: A) given Kvs[A, F], FlatMap[F]: F[Unit] = for {
     _ <- x.put(Vector(1, 2, 3), Vector(4, 5, 6))
-    _ = assert(x.get(Vector(1, 2, 3)) == Some(Vector(4, 5, 6)))
+    v <- x.get(Vector(1, 2, 3))
+    _ = assert(v == Some(Vector(4, 5, 6)))
     _ <-x.del(Vector(1, 2, 3))
   } yield ()
 
+  val executorService = ExecutionContext.fromExecutorService(Executors.newCachedThreadPool)
+  given ioContextShift as ContextShift[IO] = IO.contextShift(executorService)
+
   val mapKvs = Kvs.MapKvs()
   putGetDel(mapKvs)
+
+  val kvsClient = Kvs.KvsClient("localhost", 3000)
+  putGetDel(kvsClient).unsafeRunSync
+
+  executorService.shutdown
 }
