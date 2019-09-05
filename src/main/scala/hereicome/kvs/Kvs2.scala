@@ -8,30 +8,27 @@ import java.util.concurrent.Executors
 import scala.concurrent.ExecutionContext
 import scala.collection.mutable
 
-object Kvs2 extends App {
-  trait Kvs[A, F[_]] {
+object Kvs2 extends App:
+  trait Kvs[A, F[_]]:
     def (x: A) put (key: Vector[Byte], value: Vector[Byte]): F[Unit]
     def (x: A) get (key: Vector[Byte]): F[Option[Vector[Byte]]]
     def (x: A) del (key: Vector[Byte]): F[Unit]
-  }
 
-  object Kvs {
+  object Kvs:
     opaque type MapKvs = mutable.Map[Vector[Byte], Vector[Byte]]
-    object MapKvs {
+    object MapKvs:
       def apply(): MapKvs = mutable.Map.empty[Vector[Byte], Vector[Byte]]
-      given as Kvs[MapKvs, Id] {
+      given as Kvs[MapKvs, Id]:
         def (x: MapKvs) put (key: Vector[Byte], value: Vector[Byte]) = x.put(key, value)
         def (x: MapKvs) get (key: Vector[Byte]) = x.get(key)
         def (x: MapKvs) del (key: Vector[Byte]) = x.remove(key)
-      }
-    }
 
     case class KvsClient(host: String, port: Int)
-    object KvsClient {
-      given as Kvs[KvsClient, IO] given ContextShift[IO] {
+    object KvsClient:
+      given as Kvs[KvsClient, IO] given ContextShift[IO]:
         import given NetIO._
         import Protocol._
-        def (x: KvsClient) put (key: Vector[Byte], value: Vector[Byte]) = for {
+        def (x: KvsClient) put (key: Vector[Byte], value: Vector[Byte]) = for
           s <- NetIO.block(Socket(x.host, x.port))
           _ <- s.writeByte(PUT)
           _ <- s.writeNBytes(key)
@@ -39,33 +36,30 @@ object Kvs2 extends App {
           r <- s.readByte
           _ <- NetIO.block(s.close)
           _ = assert(r == OK)
-        } yield ()
-        def (x: KvsClient) get (key: Vector[Byte]) = for {
+        yield ()
+        def (x: KvsClient) get (key: Vector[Byte]) = for
           s <- NetIO.block(Socket(x.host, x.port))
           _ <- s.writeByte(GET)
           _ <- s.writeNBytes(key)
           r <- s.readByte
           v <- if (r == Ok_NONE) IO.pure(None) else s.readNBytes.map(Some(_))
           _ <- NetIO.block(s.close)
-        } yield v
-        def (x: KvsClient) del (key: Vector[Byte]) = for {
+        yield v
+        def (x: KvsClient) del (key: Vector[Byte]) = for
           s <- NetIO.block(Socket(x.host, x.port))
           _ <- s.writeByte(DEL)
           _ <- s.writeNBytes(key)
           r <- s.readByte
           _ <- NetIO.block(s.close)
           _ = assert(r == OK)
-        } yield ()
-      }
-    }
-  }
+        yield ()
 
-  def putGetDel[A, F[_]](x: A) given Kvs[A, F], FlatMap[F]: F[Unit] = for {
+  def putGetDel[A, F[_]](x: A) given Kvs[A, F], FlatMap[F]: F[Unit] = for
     _ <- x.put(Vector(1, 2, 3), Vector(4, 5, 6))
     v <- x.get(Vector(1, 2, 3))
     _ = assert(v == Some(Vector(4, 5, 6)))
     _ <-x.del(Vector(1, 2, 3))
-  } yield ()
+  yield ()
 
   val executorService = ExecutionContext.fromExecutorService(Executors.newCachedThreadPool)
   given ioContextShift as ContextShift[IO] = IO.contextShift(executorService)
@@ -77,4 +71,3 @@ object Kvs2 extends App {
   putGetDel(kvsClient).unsafeRunSync
 
   executorService.shutdown
-}

@@ -10,13 +10,13 @@ import scala.concurrent.ExecutionContext
 import Kvs2._
 import Protocol._
 
-object KvsServer extends IOApp {
-  def process[A](socket: Socket, kvsM: MVar[IO, A]) given ContextShift[IO], Kvs[A, Id]: IO[Unit] = {
+object KvsServer extends IOApp:
+  def process[A](socket: Socket, kvsM: MVar[IO, A]) given ContextShift[IO], Kvs[A, Id]: IO[Unit] =
     import given NetIO._
-    for {
+    for
       b <- socket.readByte
       _ <- b match {
-        case PUT => for {
+        case PUT => for
           k <- socket.readNBytes
           v <- socket.readNBytes
           _ = println(s"put k = $k, v = $v")
@@ -24,42 +24,39 @@ object KvsServer extends IOApp {
           _ = kvs.put(k, v)
           _ <- kvsM.put(kvs)
           _ <- socket.writeByte(OK)
-        } yield ()
-        case GET => for {
+        yield ()
+        case GET => for
           k <- socket.readNBytes
           _ = println(s"get k = $k")
           kvs <- kvsM.take
           v = kvs.get(k)
           _ <- kvsM.put(kvs)
-          _ <- if (v.isEmpty) socket.writeByte(Ok_NONE) else socket.writeByte(OK_SOME) >> socket.writeNBytes(v.get)
-        } yield ()
-        case DEL => for {
+          _ <- if v.isEmpty then socket.writeByte(Ok_NONE) else socket.writeByte(OK_SOME) >> socket.writeNBytes(v.get)
+        yield ()
+        case DEL => for
           k <- socket.readNBytes
           _ = println(s"del k = $k")
           kvs <- kvsM.take
           _ = kvs.del(k)
           _ <- kvsM.put(kvs)
           _ <- socket.writeByte(OK)
-        } yield ()
+        yield ()
         case _ => socket.writeByte(FAIL)
       }
       _ <- NetIO.block(socket.close)
-    } yield ()
-  }
+    yield ()
 
-  def listen[A](serverSocket: ServerSocket, kvs: MVar[IO, A]) given ContextShift[IO], Kvs[A, Id]: IO[Unit] = for {
+  def listen[A](serverSocket: ServerSocket, kvs: MVar[IO, A]) given ContextShift[IO], Kvs[A, Id]: IO[Unit] = for
     socket <- NetIO.block(serverSocket.accept)
     fiber <- process(socket, kvs).start(contextShift)
     _ <- listen(serverSocket, kvs)
-  } yield ()
+  yield ()
 
-  def run(args: List[String]): IO[ExitCode] = {
+  def run(args: List[String]): IO[ExitCode] =
     import given Kvs2.Kvs._
     given ioContextShift as ContextShift[IO] = IO.contextShift(ExecutionContext.fromExecutorService(Executors.newCachedThreadPool))
-    for {
+    for
       serverSocket <- NetIO.block(ServerSocket(3000))
       kvsM <- MVar.of[IO, Kvs.MapKvs](Kvs.MapKvs())
       _ <- listen(serverSocket, kvsM)
-    } yield ExitCode.Success
-  }
-}
+    yield ExitCode.Success
