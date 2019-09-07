@@ -5,22 +5,9 @@ import scala.quoted._
 inline def _for(init: => Any)(cond: => Boolean)(inc: => Any)(body: => Any): Unit =
   ${forImpl('init, 'cond, 'inc, 'body)}
 
-def forImpl(init: Expr[Any], cond: Expr[Boolean], inc: Expr[Any], body: Expr[Any]) given QuoteContext = '{
-  val w = '{
-    while ($cond) {
-      $body
-      $inc
-    }
-  }
-  init match {
-    case '{i} =>
-      $i; $w
-    case _ =>
-      $init; $w
-  }
+def forImpl(init: Expr[Any], cond: Expr[Boolean], inc: Expr[Any], body: Expr[Any]) given (ctx: QuoteContext) = {
+  import ctx.tasty._
+  println(init.toString)
+  println(init.unseal)
+  '{}
 }
-
-@main def forTest = 
-  _for(var i = 0)({i < 10})(i += 1) {
-    println(s"i = $i")
-  }
