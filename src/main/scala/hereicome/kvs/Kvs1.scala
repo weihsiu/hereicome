@@ -2,7 +2,7 @@ package hereicome.kvs
 
 import scala.collection.mutable
 
-object Kvs1 extends App:
+object Kvs1:
   trait Kvs[A]:
     def (x: A) put (key: Vector[Byte], value: Vector[Byte]): Unit
     def (x: A) get (key: Vector[Byte]): Option[Vector[Byte]]
@@ -28,17 +28,8 @@ object Kvs1 extends App:
         def (x: MapKvs) put (key: Vector[Byte], value: Vector[Byte]) = x.put(key, value)
         def (x: MapKvs) get (key: Vector[Byte]) = x.get(key)
         def (x: MapKvs) del (key: Vector[Byte]) = x.remove(key)
+
   import Kvs._
-
-  def putGetDel[A](x: A) given Kvs[A]: Unit = 
-    x.put(Vector(1, 2, 3), Vector(4, 5, 6))
-    assert(x.get(Vector(1, 2, 3)) == Some(Vector(4, 5, 6)))
-    x.del(Vector(1, 2, 3))
-
-  val simpleKvs = SimpleKvs()
-  putGetDel(simpleKvs)
-  val mapKvs = MapKvs()
-  putGetDel(mapKvs)
 
   trait KvsExt[A]:
     def (x: A) getPrefixed (prefix: Vector[Byte]): List[(Vector[Byte], Vector[Byte])]
@@ -50,13 +41,3 @@ object Kvs1 extends App:
     given as KvsExt[MapKvs]:
       def (x: MapKvs) getPrefixed (prefix: Vector[Byte]) =
         MapKvs.getMap(x).view.filterKeys(_.startsWith(prefix)).toList
-
-  def putGetPrefixedDel[A](x: A) given Kvs[A], KvsExt[A]: Unit =
-    x.put(Vector(1, 2, 3), Vector(4, 5, 6))
-    x.put(Vector(1, 2, 4), Vector(5, 6, 7))
-    val ps = x.getPrefixed(Vector(1, 2))
-    assert(ps.toSet == Set((Vector(1, 2, 3), Vector(4, 5, 6)), (Vector(1, 2, 4), Vector(5, 6, 7))))
-    ps.foreach((k, v) => x.del(k))
-
-  putGetPrefixedDel(simpleKvs)
-  putGetPrefixedDel(mapKvs)

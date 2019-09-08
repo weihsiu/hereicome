@@ -8,7 +8,7 @@ import java.util.concurrent.Executors
 import scala.concurrent.ExecutionContext
 import scala.collection.mutable
 
-object Kvs2 extends App:
+object Kvs2:
   trait Kvs[A, F[_]]:
     def (x: A) put (key: Vector[Byte], value: Vector[Byte]): F[Unit]
     def (x: A) get (key: Vector[Byte]): F[Option[Vector[Byte]]]
@@ -53,21 +53,3 @@ object Kvs2 extends App:
           _ <- NetIO.block(s.close)
           _ = assert(r == OK)
         yield ()
-
-  def putGetDel[A, F[_]](x: A) given Kvs[A, F], FlatMap[F]: F[Unit] = for
-    _ <- x.put(Vector(1, 2, 3), Vector(4, 5, 6))
-    v <- x.get(Vector(1, 2, 3))
-    _ = assert(v == Some(Vector(4, 5, 6)))
-    _ <-x.del(Vector(1, 2, 3))
-  yield ()
-
-  val executorService = ExecutionContext.fromExecutorService(Executors.newCachedThreadPool)
-  given ioContextShift as ContextShift[IO] = IO.contextShift(executorService)
-
-  val mapKvs = Kvs.MapKvs()
-  putGetDel(mapKvs)
-
-  val kvsClient = Kvs.KvsClient("localhost", 3000)
-  putGetDel(kvsClient).unsafeRunSync
-
-  executorService.shutdown

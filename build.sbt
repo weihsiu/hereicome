@@ -9,6 +9,9 @@ scalacOptions ++= Seq(
 )
 
 libraryDependencies ++= Seq(
+  "com.eed3si9n.verify" %% "verify" % "0.1.0" % Test,
   ("org.typelevel" %% "cats-core" % "2.0.0-RC2").withDottyCompat(scalaVersion.value),
   ("org.typelevel" %% "cats-effect" % "2.0.0-RC2").withDottyCompat(scalaVersion.value)
 )
+
+testFrameworks += new TestFramework("verify.runner.Framework")
