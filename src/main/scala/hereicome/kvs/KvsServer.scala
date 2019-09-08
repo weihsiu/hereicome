@@ -48,6 +48,7 @@ object KvsServer extends IOApp:
 
   def listen[A](serverSocket: ServerSocket, kvs: MVar[IO, A]) given ContextShift[IO], Kvs[A, Id]: IO[Unit] = for
     socket <- NetIO.block(serverSocket.accept)
+    _ = println("listening...")
     fiber <- process(socket, kvs).start(contextShift)
     _ <- listen(serverSocket, kvs)
   yield ()
