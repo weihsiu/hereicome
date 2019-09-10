@@ -24,7 +24,7 @@ object Kvs2Test extends TestSuite[Unit]:
       println(l)
       l != "listening..."
     } do ()
-    println("started")
+    println("server started")
   override def tearDownSuite() =
     process.foreach(_.destroy)
   override def setup() = ()
