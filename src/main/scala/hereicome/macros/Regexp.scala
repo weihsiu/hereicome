@@ -7,26 +7,37 @@ package hereicome.macros
 // $    matches the end of the input string
 // *    matches zero or more occurrences of the previous character
 
-object Regex:
-  def matches(regexp: String, text: String): Boolean =
+object Regexp:
+  def matchRegexp(regexp: String, text: String): Boolean =
+    def matchHere(ri: Int, ti: Int): Boolean =
+      if ri == regexp.length then true
+      else if ri + 1 < regexp.length && regexp(ri + 1) == '*' then matchStar(regexp(ri), ri + 2, ti)
+      else if regexp(ri) == '$' && ri == regexp.length - 1 then ti == text.length
+      else if ti != text.length && (regexp(ri) == '.' || regexp(ri) == text(ti)) then matchHere(ri + 1, ti + 1)
+      else false
+    def matchStar(c: Char, ri: Int, ti: Int): Boolean =
+      var i = ti
+      while
+        if matchHere(ri, i) then return true
+        i != text.length && (text(i + 1) == c || c == '.')
+      do i += 1
+      false
     if regexp(0) == '^'
-      then matchHere(regexp.tail, text)
+      then matchHere(1, 0)
       else
+        var i = 0
         while
-          if matchHere(regexp, text)
-            then return true
-          text.isEmpty
-        do ()
+          if matchHere(0, i) then return true
+          i + 1 != text.length
+        do i += 1
     false
-  def matchHere(regexp: String, text: String): Boolean =
-    if regexp.isEmpty then true
-    else if regexp(1) == '*' then matchStar(regexp(0), regexp.substring(2), text)
-    else if regexp(0) == '$' && regexp.length == 1 then text.isEmpty
-    else if text.isEmpty && (regexp(0) == '.' || regexp(0) == text(0)) then matchHere(regexp.tail, text.tail)
-    else false
-  def matchStar(c: Char, regexp: String, text: String): Boolean =
-    while
-      if matchHere(regexp, text) then return true
-      text.nonEmpty && (text(0) == c || c == '.')
-    do ()
-    false
+
+@main def testRegexp() =
+  import Regexp._
+  assert(matchRegexp("abc", "abc123"))
+  assert(matchRegexp("123", "abc123"))
+  assert(!matchRegexp("^123", "abc123"))
+  assert(!matchRegexp("abc$", "abc123"))
+  assert(matchRegexp(".*123", "abc123"))
+  assert(matchRegexp(".*12", "abc123"))
+  assert(matchRegexp(".*12$", "abc123"))
