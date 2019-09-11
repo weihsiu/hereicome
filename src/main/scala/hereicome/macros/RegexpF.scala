@@ -7,7 +7,7 @@ package hereicome.macros
 // $    matches the end of the input string
 // *    matches zero or more occurrences of the previous character
 
-object Regexp:
+object RegexpF:
   def matchRegexp(regexp: String, text: String): Boolean =
     def matchHere(ri: Int, ti: Int): Boolean =
       if ri == regexp.length then true
@@ -17,27 +17,30 @@ object Regexp:
       else false
     def matchStar(c: Char, ri: Int, ti: Int): Boolean =
       var i = ti
+      var r = false
       while
-        if matchHere(ri, i) then return true
-        i != text.length && (text(i + 1) == c || c == '.')
+        if matchHere(ri, i) then r = true
+        !r && i != text.length && (i + 1 < text.length && text(i + 1) == c || c == '.')
       do i += 1
-      false
+      r
     if regexp(0) == '^'
       then matchHere(1, 0)
       else
         var i = 0
+        var r = false
         while
-          if matchHere(0, i) then return true
-          i + 1 != text.length
+          if matchHere(0, i) then r = true
+          !r && i + 1 != text.length
         do i += 1
-    false
+        r
 
-@main def testRegexp() =
-  import Regexp._
+@main def testRegexpF() =
+  import RegexpF._
   assert(matchRegexp("abc", "abc123"))
   assert(matchRegexp("123", "abc123"))
   assert(!matchRegexp("^123", "abc123"))
   assert(!matchRegexp("abc$", "abc123"))
   assert(matchRegexp(".*123", "abc123"))
   assert(matchRegexp(".*12", "abc123"))
-  assert(matchRegexp(".*12$", "abc123"))
+  assert(!matchRegexp(".*12$", "abc123"))
+  assert(matchRegexp("^a.*3$", "abc123"))
