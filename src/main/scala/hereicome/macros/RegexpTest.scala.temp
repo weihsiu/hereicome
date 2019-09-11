@@ -1,0 +1,12 @@
+package hereicome.macros
+
+@main def testRegexpM() =
+  import RegexpM._
+  assert(matchRegexp("abc", "abc123"))
+  assert(matchRegexp("123", "abc123"))
+  assert(!matchRegexp("^123", "abc123"))
+  assert(!matchRegexp("abc$", "abc123"))
+  assert(matchRegexp(".*123", "abc123"))
+  assert(matchRegexp(".*12", "abc123"))
+  assert(!matchRegexp(".*12$", "abc123"))
+  assert(matchRegexp("^a.*3$", "abc123"))

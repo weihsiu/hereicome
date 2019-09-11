@@ -5,7 +5,7 @@ import given scala.quoted.autolift._
 
 object Assert:
   inline def assert(expr: => Boolean): Unit =
-    ${ assertImpl('expr) }
+    ${assertImpl('expr)}
 
   def assertImpl(expr: Expr[Boolean]) given QuoteContext =
     '{ if !($expr) then throw new AssertionError(s"failed assertion: ${${ showExpr(expr) }}") }
