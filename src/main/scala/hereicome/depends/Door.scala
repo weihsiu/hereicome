@@ -1,5 +1,7 @@
 package hereicome.depends
 
+import scala.annotation._
+
 enum DoorState:
   case IsOpen()
   case IsClosed()
@@ -22,18 +24,11 @@ case object RingBell extends DoorCommand[IsClosed]:
   type NextState = IsClosed
   val nextState = new IsClosed
 
-def doCommand[S <: DoorState](state: S, command: DoorCommand[S]): command.NextState =
+type DoCommand[S <: DoorState] = (c: DoorCommand[S]) => c.NextState // Dependent Function Types
+
+def (state: S) after[S <: DoorState]: DoCommand[S] = command =>
   command.nextState
 
-val s1 = doCommand(new IsOpen, Close)
-val s2 = doCommand(s1, RingBell)
-val s3 = doCommand(s2, Open)
-
-type DoCommand[S] = (c: DoorCommand[S]) => c.NextState // Dependent Function Types
-
-def execute[S <: DoorState](state: S): DoCommand[S] = command =>
-  doCommand(state, command)
-
-val s4 = execute(new IsOpen)(Close)
-val s5 = execute(s4)(RingBell)
-val s6 = execute(s5)(Open)
+val s1 = new IsOpen after Close
+val s2 = s1 after RingBell
+val s3 = s2 after Open
