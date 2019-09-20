@@ -9,7 +9,7 @@ scalacOptions ++= Seq(
 )
 
 libraryDependencies ++= Seq(
-  "com.eed3si9n.verify" %% "verify" % "0.2.0" % Test,
+  // "com.eed3si9n.verify" %% "verify" % "0.2.0" % Test,
   ("org.typelevel" %% "cats-core" % "2.0.0").withDottyCompat(scalaVersion.value),
   ("org.typelevel" %% "cats-effect" % "2.0.0").withDottyCompat(scalaVersion.value)
 )
