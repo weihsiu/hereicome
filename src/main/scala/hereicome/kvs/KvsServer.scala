@@ -10,9 +10,9 @@ import scala.concurrent.ExecutionContext
 import Kvs2._
 import Protocol._
 
-object KvsServer extends IOApp:
-  def process[A](socket: Socket, kvsM: MVar[IO, A]) given ContextShift[IO], Kvs[A, Id]: IO[Unit] =
-    import given NetIO._
+object KvsServer extends IOApp
+  def process[A](socket: Socket, kvsM: MVar[IO, A])(given ContextShift[IO], Kvs[A, Id]): IO[Unit] =
+    import NetIO.given
     for
       b <- socket.readByte
       _ <- b match {
@@ -46,7 +46,7 @@ object KvsServer extends IOApp:
       _ <- NetIO.block(socket.close)
     yield ()
 
-  def listen[A](serverSocket: ServerSocket, kvs: MVar[IO, A]) given ContextShift[IO], Kvs[A, Id]: IO[Unit] = for
+  def listen[A](serverSocket: ServerSocket, kvs: MVar[IO, A])(given ContextShift[IO], Kvs[A, Id]): IO[Unit] = for
     socket <- NetIO.block(serverSocket.accept)
     _ = println("listening...")
     fiber <- process(socket, kvs).start(contextShift)
@@ -54,8 +54,8 @@ object KvsServer extends IOApp:
   yield ()
 
   def run(args: List[String]): IO[ExitCode] =
-    import given Kvs2.Kvs._
-    given ioContextShift as ContextShift[IO] = IO.contextShift(ExecutionContext.fromExecutorService(Executors.newCachedThreadPool))
+    import Kvs2.Kvs.given
+    given ioContextShift: ContextShift[IO] = IO.contextShift(ExecutionContext.fromExecutorService(Executors.newCachedThreadPool))
     for
       serverSocket <- NetIO.block(ServerSocket(3000))
       kvsM <- MVar.of[IO, Kvs.MapKvs](Kvs.MapKvs())

@@ -2,29 +2,29 @@ package hereicome
 
 import scala.collection.mutable.ArrayBuffer
 
-class Table:
+class Table
   val rows = ArrayBuffer.empty[Row]
   def add(r: Row): Unit = rows += r
   override def toString = rows.mkString("Table(", ",", ")")
 
-class Row:
+class Row
   val cells = ArrayBuffer.empty[Cell]
   def add(c: Cell): Unit = cells += c
   override def toString = cells.mkString("Row(", ", ", ")")
 
 case class Cell(elem: String)
 
-def table(init: given Table => Unit): Table =
-  given t as Table
+def table(init: (given Table) => Unit): Table =
+  given t: Table
   init
   t
 
-def row(init: given Row => Unit) given (t: Table) =
-  given r as Row
+def row(init: (given Row) => Unit)(given t: Table) =
+  given r: Row
   init
   t.add(r)
 
-def cell(str: String) given (r: Row) =
+def cell(str: String)(given r: Row) =
   r.add(Cell(str))
 
 @main def testTable() =

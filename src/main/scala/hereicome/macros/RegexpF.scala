@@ -7,7 +7,7 @@ package hereicome.macros
 // $    matches the end of the input string
 // *    matches zero or more occurrences of the previous character
 
-object RegexpF:
+object RegexpF
   def matchRegexp(regexp: String, text: String): Boolean =
     def matchHere(ri: Int, ti: Int): Boolean =
       if ri == regexp.length then true

@@ -1,27 +1,27 @@
 package hereicome.kvs
 
 import Kvs1._
-import given hereicome.kvs._
+import hereicome.kvs.given
 
-object Kvs3:
+object Kvs3
 
-  trait TypedKvs[A]:
-    def (x: A) putT[K, V] (key: K, value: V) given Serde[K], Serde[V]: Unit
-    def (x: A) getT[K, V] (key: K) given Serde[K], Serde[V]: Option[V]
-    def (x: A) delT[K] (key: K) given Serde[K]: Unit
+  trait TypedKvs[A]
+    def (x: A) putT[K, V] (key: K, value: V)(given Serde[K], Serde[V]): Unit
+    def (x: A) getT[K, V] (key: K)(given Serde[K], Serde[V]): Option[V]
+    def (x: A) delT[K] (key: K)(given Serde[K]): Unit
 
-  object TypedKvs:
-    given [A] as TypedKvs[A] given Kvs[A]:
-      def (x: A) putT[K, V] (key: K, value: V) given Serde[K], Serde[V] =
+  object TypedKvs
+    given [A](given Kvs[A]): TypedKvs[A]
+      def (x: A) putT[K, V] (key: K, value: V)(given Serde[K], Serde[V]) =
         x.put(key.serialize, value.serialize)
-      def (x: A) getT[K, V] (key: K) given Serde[K], Serde[V] =
-        x.get(key.serialize).map(the[Serde[V]].deserialize)
-      def (x: A) delT[K] (key: K) given Serde[K] =
+      def (x: A) getT[K, V] (key: K)(given Serde[K], Serde[V]) =
+        x.get(key.serialize).map(summon[Serde[V]].deserialize)
+      def (x: A) delT[K] (key: K)(given Serde[K]) =
         x.del(key.serialize)
-  import given TypedKvs._
+  import TypedKvs.given
 
   @main def typedKvsTest() =
-    import given Kvs.SimpleKvs._
+    import Kvs.SimpleKvs.given
     val simpleKvs = Kvs.SimpleKvs()
     simpleKvs.putT("hello", "world")
     assert(simpleKvs.getT[V = String]("hello") == Some("world")) // Named Type Argument

@@ -1,6 +1,6 @@
 package hereicome.kvs
 
-object Protocol:
+object Protocol
   val PUT: Byte = 0
   val GET: Byte = 1
   val DEL: Byte = 2

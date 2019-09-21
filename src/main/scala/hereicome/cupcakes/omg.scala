@@ -1,41 +1,41 @@
 package hereicome.cupcakes
 
-type |=>[A, B] = given A => B
+type |=>[A, B] = (given A) => B
 
-trait FileService:
+trait FileService
   def write(data: String): Unit =
     println(s"writing $data")
-object FileService:
+object FileService
   def write(data: String): FileService |=> Unit =
-    the[FileService].write(data)
+    summon[FileService].write(data)
 
-trait DatabaseService:
+trait DatabaseService
   def insert(data: String): Int =
     println(s"inserting $data")
     123
 
-trait NetworkService:
+trait NetworkService
   def transmit(data: String): Boolean = 
     println(s"transmitting $data")
     true
 
-trait LogService(val prefix: String):
+trait LogService(val prefix: String)
   def log(data: String): FileService |=> Unit =
-    the[FileService].write(s"log $prefix:$data")
+    summon[FileService].write(s"log $prefix:$data")
 
 type AllServices = FileService & DatabaseService & NetworkService & LogService
 
-def persist(name: String): FileService & DatabaseService |=> Int = given ctx =>
+def persist(name: String): FileService & DatabaseService |=> Int = (given ctx) =>
   import FileService._
   write(name)
   ctx.insert(name)
 
-def send(name: String): DatabaseService & NetworkService |=> Boolean = given ctx =>
+def send(name: String): DatabaseService & NetworkService |=> Boolean = (given ctx) =>
   ctx.insert(name)
   ctx.transmit(name)
 
-def process(name: String): AllServices |=> Boolean = given ctx =>
-  given mock as FileService, DatabaseService, NetworkService, LogService("mock"):
+def process(name: String): AllServices |=> Boolean = (given ctx) =>
+  given mock: FileService, DatabaseService, NetworkService, LogService("mock")
     export ctx._
     override def write(data: String) = println(s"mock writing $data")
   ctx.log(name)
@@ -44,7 +44,7 @@ def process(name: String): AllServices |=> Boolean = given ctx =>
 
 @main def testOMG() =
   class Universe extends FileService with DatabaseService with NetworkService with LogService("omg")
-  given as Universe
+  given Universe
 
   persist("adrian")
   send("brian")

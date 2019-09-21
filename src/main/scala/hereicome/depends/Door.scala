@@ -2,25 +2,25 @@ package hereicome.depends
 
 import scala.annotation._
 
-enum DoorState:
+enum DoorState
   case IsOpen()
   case IsClosed()
   
 import DoorState._
 
-sealed trait DoorCommand[S <: DoorState]:
+sealed trait DoorCommand[S <: DoorState]
   type NextState <: DoorState
   def nextState: NextState
 
-case object Open extends DoorCommand[IsClosed]:
+case object Open extends DoorCommand[IsClosed]
   type NextState = IsOpen
   val nextState = new IsOpen
   
-case object Close extends DoorCommand[IsOpen]:
+case object Close extends DoorCommand[IsOpen]
   type NextState = IsClosed
   val nextState = new IsClosed
   
-case object RingBell extends DoorCommand[IsClosed]:
+case object RingBell extends DoorCommand[IsClosed]
   type NextState = IsClosed
   val nextState = new IsClosed
 

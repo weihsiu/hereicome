@@ -5,15 +5,15 @@ import cats.implicits._
 import java.io.{DataInputStream, DataOutputStream}
 import java.net.Socket
 
-trait NetIO[F[_]]:
+trait NetIO[F[_]]
   def (socket: Socket) readByte: F[Byte]
   def (socket: Socket) readNBytes: F[Vector[Byte]]
   def (socket: Socket) writeByte(byte: Byte): F[Unit]
   def (socket: Socket) writeNBytes(bytes: Vector[Byte]): F[Unit]
 
-object NetIO:
-  def block[A](thunk: => A) given ContextShift[IO]: IO[A] = Blocker[IO].use(_.delay(thunk))
-  given as NetIO[IO] given ContextShift[IO]:
+object NetIO
+  def block[A](thunk: => A)(given ContextShift[IO]): IO[A] = Blocker[IO].use(_.delay(thunk))
+  given (given ContextShift[IO]): NetIO[IO]
     def (socket: Socket) readByte = block(socket.getInputStream.read.toByte)
     def (socket: Socket) readNBytes = block {
       val dis = DataInputStream(socket.getInputStream)
