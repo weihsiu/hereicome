@@ -32,3 +32,11 @@ object Select2
     type Out = B
     def (x: Map[A, B]) select (selector: A)(given S: Selector[A, A]): Option[B] =
       x.get(S.value(selector))
+
+@main def testSelect2() =
+  import Select2.given
+  assert(Vector(1, 2, 3).select(1) == Some(2))
+  assert(Vector(1, 2, 3).select(3) == None)
+  assert(Map("a" -> 1, "b" -> 2, "c" -> 3).select("b") == Some(2))
+  assert(Map("a" -> 1, "b" -> 2, "c" -> 3).select("d") == None)
+  println(Vector(1, 2, 3).select(RandomInt(0, 3)))
