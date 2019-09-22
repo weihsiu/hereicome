@@ -1,4 +1,4 @@
-package hereicome.cupcakes
+package hereicome.ifts
 
 type |=>[A, B] = (given A) => B
 
