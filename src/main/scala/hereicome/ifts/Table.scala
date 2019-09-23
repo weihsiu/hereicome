@@ -1,4 +1,4 @@
-package hereicome
+package hereicome.ifts
 
 import scala.collection.mutable.ArrayBuffer
 

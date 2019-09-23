@@ -5,7 +5,6 @@ marp: false
 ## 張瑋修 Walter Chang
 ### @weihsiu / weihsiu@gmail.com
 ![https://github.com/weihsiu/hereicome](qrcode.png)
-
 ---
 # Agenda
 - What is Scala 3?

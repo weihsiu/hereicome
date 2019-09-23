@@ -1,7 +1,6 @@
 package hereicome.kvs
 
 import Kvs1._
-import hereicome.kvs.given
 
 object Kvs3
 
@@ -18,17 +17,18 @@ object Kvs3
         x.get(key.serialize).map(summon[Serde[V]].deserialize)
       def (x: A) delT[K] (key: K)(given Serde[K]) =
         x.del(key.serialize)
+
+@main def testKvs3() =
+  import Kvs3._
   import TypedKvs.given
+  import Kvs.SimpleKvs.given
+  val simpleKvs = Kvs.SimpleKvs()
+  simpleKvs.putT("hello", "world")
+  assert(simpleKvs.getT[V = String]("hello") == Some("world")) // Named Type Argument
+  simpleKvs.delT("hello")
 
-  @main def testKvs3() =
-    import Kvs.SimpleKvs.given
-    val simpleKvs = Kvs.SimpleKvs()
-    simpleKvs.putT("hello", "world")
-    assert(simpleKvs.getT[V = String]("hello") == Some("world")) // Named Type Argument
-    simpleKvs.delT("hello")
-
-    simpleKvs.putT(1, "one")
-    simpleKvs.putT("two", 2)
-    assert(simpleKvs.getT[V = String](1) == Some("one"))
-    assert(simpleKvs.getT[V = Int]("two") == Some(2))
-    assert(simpleKvs.getT[V = Int](3) == None)
+  simpleKvs.putT(1, "one")
+  simpleKvs.putT("two", 2)
+  assert(simpleKvs.getT[V = String](1) == Some("one"))
+  assert(simpleKvs.getT[V = Int]("two") == Some(2))
+  assert(simpleKvs.getT[V = Int](3) == None)
