@@ -3,6 +3,7 @@ package hereicome.kvs
 import scala.collection.mutable
 
 object Kvs1
+
   trait Kvs[A]
     def (x: A) put (key: Vector[Byte], value: Vector[Byte]): Unit
     def (x: A) get (key: Vector[Byte]): Option[Vector[Byte]]

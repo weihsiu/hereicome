@@ -9,6 +9,7 @@ import scala.concurrent.ExecutionContext
 import scala.collection.mutable
 
 object Kvs2
+
   trait Kvs[A, F[_]]
     def (x: A) put (key: Vector[Byte], value: Vector[Byte]): F[Unit]
     def (x: A) get (key: Vector[Byte]): F[Option[Vector[Byte]]]

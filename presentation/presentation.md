@@ -4,16 +4,31 @@ marp: false
 # Scala 3, Here I Come!
 ## 張瑋修 Walter Chang
 ### @weihsiu / weihsiu@gmail.com
+![https://github.com/weihsiu/hereicome](qrcode.png)
 
 ---
 # Agenda
 - What is Scala 3?
 - New Syntax
+- Select.scala
+- Select2.scala
+- Actor.scala
+- Door.scala
+- It.scala
+- Cupcakes.scala
+- Kvs1.scala
+- Kvs2.scala
+- NetIO.scala
+- Serde.scala
+- Kvs3.scala
+- Q&A
 ---
 # What is Scala 3?
 - Next generation 
 - Coming out Fall 2020
 - Many new features
+  - Source code is mostly backward compatible with Scala 2
+- VSCode with Dotty Language Server plugin
 ---
 # New Syntax
 - Optional
@@ -22,7 +37,7 @@ marp: false
 - Compiler switches allow to go back and forth
 ---
 # Select.scala
-- **Given Instances**
+- **Anonymous Given Instances**
 - **Extension Methods**
 - **Main Functions**
 - **Given Imports**
@@ -48,7 +63,7 @@ marp: false
 ---
 # Cupcakes.scala
 - A minimum DI framework
-- Infamous Cake Pattern in Scala
+- New take on the infamous Cake Pattern in Scala 2
 - **Implicit Function Types**
   - As return value
 - **summon** aka. "the"
@@ -64,6 +79,7 @@ marp: false
 - Abstract effects
   - Identity effect
   - Network IO effect
+- **Alias Givens**
 ---
 # NetIO.scala
 - Socket IO effect
@@ -74,3 +90,7 @@ marp: false
 ---
 # Kvs3.scala
 - Typed key value store
+- **Named Type Arguments**
+---
+# Q&A
+![https://github.com/weihsiu/hereicome](qrcode.png)
