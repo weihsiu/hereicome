@@ -8,7 +8,7 @@ marp: false
 ---
 # Agenda
 - What is Scala 3?
-- 
+- New Syntax
 ---
 # What is Scala 3?
 - Next generation 
@@ -64,6 +64,13 @@ marp: false
 - Abstract effects
   - Identity effect
   - Network IO effect
+---
+# NetIO.scala
+- Socket IO effect
+- **Creator Applications**
+---
+# Serde.scala
+- Serialization / deserialization
 ---
 # Kvs3.scala
 - Typed key value store
