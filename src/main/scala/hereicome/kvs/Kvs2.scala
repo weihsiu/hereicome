@@ -53,3 +53,23 @@ object Kvs2
           _ <- NetIO.block(s.close)
           _ = assert(r == OK)
         yield ()
+
+@main def testKvs2() =
+  import Kvs2._
+  def putGetDel[A, F[_]](x: A)(given Kvs[A, F], FlatMap[F]): F[Unit] = for
+    _ <- x.put(Vector(1, 2, 3), Vector(4, 5, 6))
+    v <- x.get(Vector(1, 2, 3))
+    _ = assert(v == Some(Vector(4, 5, 6)))
+    _ <-x.del(Vector(1, 2, 3))
+  yield ()
+
+  val executorService = ExecutionContext.fromExecutorService(Executors.newCachedThreadPool)
+  given ioContextShift: ContextShift[IO] = IO.contextShift(executorService)
+
+  val mapKvs = Kvs.MapKvs()
+  putGetDel(mapKvs)
+
+  val kvsClient = Kvs.KvsClient("localhost", 3000)
+  putGetDel(kvsClient).unsafeRunSync
+
+  executorService.shutdown

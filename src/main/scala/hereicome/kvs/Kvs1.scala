@@ -41,3 +41,30 @@ object Kvs1
     given KvsExt[MapKvs]
       def (x: MapKvs) getPrefixed (prefix: Vector[Byte]) =
         MapKvs.getMap(x).view.filterKeys(_.startsWith(prefix)).toList
+
+@main def testKvs1() =
+  import Kvs1._
+  def putGetDel[A](x: A)(given Kvs[A]): Unit = 
+    x.put(Vector(1, 2, 3), Vector(4, 5, 6))
+    val v = x.get(Vector(1, 2, 3))
+    assert(v == Some(Vector(4, 5, 6)))
+    x.del(Vector(1, 2, 3))
+
+  val simpleKvs = Kvs.SimpleKvs()
+  putGetDel(simpleKvs)
+  val mapKvs = Kvs.MapKvs()
+  putGetDel(mapKvs)
+
+@main def testKvsExt() =
+  import Kvs1._
+  def putGetPrefixedDel[A](x: A)(given Kvs[A], KvsExt[A]): Unit =
+    x.put(Vector(1, 2, 3), Vector(4, 5, 6))
+    x.put(Vector(1, 2, 4), Vector(5, 6, 7))
+    val ps = x.getPrefixed(Vector(1, 2))
+    assert(ps.toSet == Set((Vector(1, 2, 3), Vector(4, 5, 6)), (Vector(1, 2, 4), Vector(5, 6, 7))))
+    ps.foreach((k, v) => x.del(k))
+
+  val simpleKvs = Kvs.SimpleKvs()
+  putGetPrefixedDel(simpleKvs)
+  val mapKvs = Kvs.MapKvs()
+  putGetPrefixedDel(mapKvs)

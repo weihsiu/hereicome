@@ -42,7 +42,7 @@ def process(name: String): AllServices |=> Boolean = (given ctx) =>
   persist(name)
   send(name)
 
-@main def testOMG() =
+@main def testCupcakes() =
   class Universe extends FileService with DatabaseService with NetworkService with LogService("omg")
   given Universe
 

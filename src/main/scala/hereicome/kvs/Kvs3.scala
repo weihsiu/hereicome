@@ -20,7 +20,7 @@ object Kvs3
         x.del(key.serialize)
   import TypedKvs.given
 
-  @main def typedKvsTest() =
+  @main def testKvs3() =
     import Kvs.SimpleKvs.given
     val simpleKvs = Kvs.SimpleKvs()
     simpleKvs.putT("hello", "world")

@@ -15,6 +15,55 @@ marp: false
 - Coming out Fall 2020
 - Many new features
 ---
-# Select.scal
-- Extension Methods
-- Given Instances
+# New Syntax
+- Optional
+- **New Control Syntax**
+- **Significant Indentation**
+- Compiler switches allow to go back and forth
+---
+# Select.scala
+- **Given Instances**
+- **Extension Methods**
+- **Main Functions**
+- **Given Imports**
+---
+# Select2.scala
+- **Opaque Type Aliases**
+- **Given Parameters**
+---
+# Actor.scala
+- A minimum actor implementation taken shamelessly from @li_haoyi
+- **Union Types**
+---
+# Door.scala
+- Taken from an Idris example
+- **Enumerations**
+- **Dependent Function Types**
+- **Toplevel Definitions**
+---
+# It.scala
+- Mimics Kotlin's "it"
+- **Implicit Function Types**
+  - As parameter
+---
+# Cupcakes.scala
+- A minimum DI framework
+- Infamous Cake Pattern in Scala
+- **Implicit Function Types**
+  - As return value
+- **summon** aka. "the"
+- **Intersection Types**
+- **Export Clauses**
+---
+# Kvs1.scala
+- Typeclass Oriented Programming (TOP)
+- A better way to organize program
+- **Parameter Untupling**
+---
+# Kvs2.scala
+- Abstract effects
+  - Identity effect
+  - Network IO effect
+---
+# Kvs3.scala
+- Typed key value store

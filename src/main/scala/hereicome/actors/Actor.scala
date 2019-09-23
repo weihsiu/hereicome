@@ -2,6 +2,7 @@ package hereicome.actors
 
 import scala.collection.mutable
 import scala.concurrent.ExecutionContext
+import scala.concurrent.ExecutionContext.Implicits.global
 
 // https://twitter.com/li_haoyi/status/1169178929963229184?s=20
 trait Actor[A](implicit ec: ExecutionContext)
@@ -25,3 +26,15 @@ trait Actor[A](implicit ec: ExecutionContext)
           assert(scheduled)
           scheduled = false
     }
+    
+@main def testActor(): Unit =
+  import scala.concurrent.ExecutionContext.Implicits.global
+  val actor = new Actor[Int | String] {
+    def receive(msg: Int | String) = msg match
+      case n: Int => println(n + 1)
+      case s: String => println(s.toUpperCase)
+  }
+  actor.send(1)
+  actor.send("hello")
+  // actor.send(true)
+    
