@@ -37,4 +37,3 @@ trait Actor[A](implicit ec: ExecutionContext)
   actor.send(1)
   actor.send("hello")
   // actor.send(true)
-    
