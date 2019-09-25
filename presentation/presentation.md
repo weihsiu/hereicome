@@ -88,6 +88,10 @@ marp: false
 - **Parameter Untupling**
 ---
 # Kvs2.scala
+- Typed key-value store
+- **Named Type Arguments**
+---
+# Kvs3.scala
 - Abstract effects
   - Identity effect
   - Network IO effect
@@ -99,10 +103,6 @@ marp: false
 ---
 # Serde.scala
 - Serialization / deserialization
----
-# Kvs3.scala
-- Typed key-value store
-- **Named Type Arguments**
 ---
 # Q&A
 ## That's all and thank you for your attention

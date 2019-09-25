@@ -7,7 +7,7 @@ import cats.implicits._
 import java.net.{ServerSocket, Socket}
 import java.util.concurrent.Executors
 import scala.concurrent.ExecutionContext
-import Kvs2._
+import Kvs3._
 import Protocol._
 
 object KvsServer extends IOApp
@@ -54,7 +54,7 @@ object KvsServer extends IOApp
   yield ()
 
   def run(args: List[String]): IO[ExitCode] =
-    import Kvs2.Kvs.given
+    import Kvs3.Kvs.given
     given ioContextShift: ContextShift[IO] = IO.contextShift(ExecutionContext.fromExecutorService(Executors.newCachedThreadPool))
     for
       serverSocket <- NetIO.block(ServerSocket(3000))
