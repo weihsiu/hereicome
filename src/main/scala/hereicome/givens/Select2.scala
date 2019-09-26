@@ -1,6 +1,6 @@
 package hereicome.givens
 
-opaque type RandomInt = (Int, Int)
+opaque type RandomInt = (Int, Int) // Opaque Type Alias
 object RandomInt
   def apply(start: Int, end: Int): RandomInt = (start, end)
   def range(randomInt: RandomInt): (Int, Int) = randomInt
@@ -19,7 +19,7 @@ object Selector
 
 trait Select2[A, B, C]
   type Out
-  def (x: A) select (selector: B)(given Selector[B, C]): Option[Out]
+  def (x: A) select (selector: B)(given Selector[B, C]): Option[Out] // Given Parameter
 
 object Select2
   given [A, B]: Select2[IndexedSeq[A], B, Int]

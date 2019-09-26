@@ -2,7 +2,7 @@ package hereicome.conversions
 
 import scala.language.implicitConversions
 
-given [A, B]: Conversion[Either[A, B], A | B] =
+given [A, B]: Conversion[Either[A, B], A | B] = // Implicit Conversion
   case Left(x) => x
   case Right(x) => x
 

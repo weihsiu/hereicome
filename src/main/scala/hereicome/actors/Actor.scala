@@ -27,7 +27,7 @@ trait Actor[A](implicit ec: ExecutionContext)
     
 @main def testActor(): Unit =
   import scala.concurrent.ExecutionContext.Implicits.global
-  val actor = new Actor[Int | String]:
+  val actor = new Actor[Int | String]: // Union Type
     def receive(msg: Int | String) = msg match
       case n: Int => println(n + 1)
       case s: String => println(s.toUpperCase)

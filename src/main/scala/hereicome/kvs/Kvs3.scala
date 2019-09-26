@@ -65,7 +65,7 @@ object Kvs3
   yield ()
 
   val executorService = ExecutionContext.fromExecutorService(Executors.newCachedThreadPool)
-  given ioContextShift: ContextShift[IO] = IO.contextShift(executorService)
+  given ioContextShift: ContextShift[IO] = IO.contextShift(executorService) // Alias Given
 
   val mapKvs = Kvs.MapKvs()
   putGetDel(mapKvs)

@@ -18,8 +18,8 @@ marp: false
 - What is Scala 3?
 - New syntax
 - Select.scala
-- Conversions.scala
 - Actor.scala
+- Conversions.scala
 - Door.scala
 - It.scala
 - Cupcakes.scala
@@ -27,7 +27,7 @@ marp: false
 - Q&A
 ---
 # What is Scala 3?
-- Next generation 
+- Next generation of Scala
 - Coming out Fall 2020
 - Many new features and cleanups
 - Source code is mostly backward compatible with Scala 2
@@ -80,6 +80,13 @@ object RandomInt
 def (x: A) select (selector: B)(given Selector[B, C]): Option[Out]
 ```
 ---
+# Actor.scala
+- A minimum actor implementation taken shamelessly from @li_haoyi
+- **Union Types**
+```scala
+new Actor[Int | String] { ??? }
+```
+---
 # Conversions.scala
 - The new and safer way to define implicit conversion
 - **Implicit Conversions**
@@ -89,16 +96,9 @@ given [A, B]: Conversion[Either[A, B], A | B] = ???
 // abstract class Conversion[-T, +U] extends Function1[T, U]
 ```
 ---
-# Actor.scala
-- A minimum actor implementation taken shamelessly from @li_haoyi
-- **Union Types**
-```scala
-new Actor[Int | String] { ??? }
-```
----
 # Door.scala
 - Translated from an Idris example
-- **Enumerations**
+- **Enums**
 ```scala
 enum DoorState
   case IsOpen()
@@ -109,7 +109,7 @@ enum DoorState
 (c: DoorCommand[S]) => c.NextState
 ```
 - **Toplevel Definitions**
-  - ```type```, ```val```, ```var```, and ```def``` can be defined without the enclosing ```trait```, ```class```, or ```object```
+  - ```type```, ```val```, ```var```, and ```def``` can be defined without the enclosing ```trait```, ```class```, or ```object```.
 ---
 # It.scala
 - Mimics Kotlin's "it"
@@ -125,7 +125,7 @@ def it[A](given p: GivenParameter[A]): A = p
 ```scala
 def write(data: String): (given FileService) => Unit
 ```
-- **summon** aka. "the"
+- **summon** aka. "the" or a better "implicitly"
 ```scala
 summon[FileService].write(data)
 ```
@@ -142,7 +142,7 @@ export ctx._
 - A simple key-value store
 - Typeclass Oriented Programming (TOP)
   - A better way to organize program
-  - A solution to [the Expression problem](https://en.wikipedia.org/wiki/Expression_problem)
+  - A solution to the [Expression problem](https://en.wikipedia.org/wiki/Expression_problem)
 - **Parameter Untupling**
 ```scala
 ps.foreach((k, v) => x.del(k))
@@ -155,10 +155,14 @@ ps.foreach((k, v) => x.del(k))
 simpleKvs.getT[V = String]("hello")
 ```
 ---
+# Serde.scala
+- Serialization / deserialization
+---
 # Kvs3.scala
 - Abstract effects
   - Identity effect
   - Network IO effect
+- Kvs network client
 - **Alias Givens**
 ```scala
 given ioContextShift: ContextShift[IO] = IO.contextShift(executorService)
@@ -171,8 +175,9 @@ given ioContextShift: ContextShift[IO] = IO.contextShift(executorService)
 DataInputStream(socket.getInputStream)
 ```
 ---
-# Serde.scala
-- Serialization / deserialization
+# KvsServer.scala
+- Kvs network server
+- Concurrency safe (Fiber, MVar)
 ---
 # Q&A
 ## That's all and thank you for your attention

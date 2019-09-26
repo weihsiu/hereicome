@@ -2,7 +2,7 @@ package hereicome.ifts
 
 object It
   opaque type GivenParameter[A] = A
-  def it[A](given p: GivenParameter[A]): A = p
+  def it[A](given p: GivenParameter[A]): A = p // Implicit Function Type
   def apply[A, B](f: (given GivenParameter[A]) => B): A => B = f(given _)
 
 @main def testIt() =

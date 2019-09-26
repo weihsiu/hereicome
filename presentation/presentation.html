@@ -27,8 +27,8 @@
 <li>What is Scala 3?</li>
 <li>New syntax</li>
 <li>Select.scala</li>
-<li>Conversions.scala</li>
 <li>Actor.scala</li>
+<li>Conversions.scala</li>
 <li>Door.scala</li>
 <li>It.scala</li>
 <li>Cupcakes.scala</li>
@@ -39,7 +39,7 @@
 </foreignObject></svg><svg data-marpit-svg="" viewBox="0 0 1280 720"><foreignObject width="1280" height="720"><section id="4">
 <h1>What is Scala 3?</h1>
 <ul>
-<li>Next generation</li>
+<li>Next generation of Scala</li>
 <li>Coming out Fall 2020</li>
 <li>Many new features and cleanups</li>
 <li>Source code is mostly backward compatible with Scala 2</li>
@@ -58,9 +58,10 @@
 <span class="hljs-keyword">for</span> x &lt;- xs do println(x)
 </span></span></foreignObject></svg></code></pre>
 <ul>
-<li><strong>Significant Indentation</strong>
+<li><strong>Optional Braces</strong>
 <ul>
 <li>No more curly braces (not really)</li>
+<li>Just indent the block that normally goes inside curly braces</li>
 </ul>
 </li>
 <li>Compiler switches allow to go back and forth</li>
@@ -108,6 +109,15 @@ given [<span class="hljs-type">A</span>]: <span class="hljs-type">Select</span>[
 </span></span></foreignObject></svg></code></pre>
 </section>
 </foreignObject></svg><svg data-marpit-svg="" viewBox="0 0 1280 720"><foreignObject width="1280" height="720"><section id="8">
+<h1>Actor.scala</h1>
+<ul>
+<li>A minimum actor implementation taken shamelessly from @li_haoyi</li>
+<li><strong>Union Types</strong></li>
+</ul>
+<pre><code class="language-scala"><svg data-marp-fitting="svg" data-marp-fitting-code><foreignObject><span data-marp-fitting-svg-content><span data-marp-fitting-svg-content-wrap><span class="hljs-keyword">new</span> <span class="hljs-type">Actor</span>[<span class="hljs-type">Int</span> | <span class="hljs-type">String</span>] { ??? }
+</span></span></foreignObject></svg></code></pre>
+</section>
+</foreignObject></svg><svg data-marpit-svg="" viewBox="0 0 1280 720"><foreignObject width="1280" height="720"><section id="9">
 <h1>Conversions.scala</h1>
 <ul>
 <li>The new and safer way to define implicit conversion</li>
@@ -118,20 +128,11 @@ given [<span class="hljs-type">A</span>, <span class="hljs-type">B</span>]: <spa
 <span class="hljs-comment">// abstract class Conversion[-T, +U] extends Function1[T, U]</span>
 </span></span></foreignObject></svg></code></pre>
 </section>
-</foreignObject></svg><svg data-marpit-svg="" viewBox="0 0 1280 720"><foreignObject width="1280" height="720"><section id="9">
-<h1>Actor.scala</h1>
-<ul>
-<li>A minimum actor implementation taken shamelessly from @li_haoyi</li>
-<li><strong>Union Types</strong></li>
-</ul>
-<pre><code class="language-scala"><svg data-marp-fitting="svg" data-marp-fitting-code><foreignObject><span data-marp-fitting-svg-content><span data-marp-fitting-svg-content-wrap><span class="hljs-keyword">new</span> <span class="hljs-type">Actor</span>[<span class="hljs-type">Int</span> | <span class="hljs-type">String</span>] { ??? }
-</span></span></foreignObject></svg></code></pre>
-</section>
 </foreignObject></svg><svg data-marpit-svg="" viewBox="0 0 1280 720"><foreignObject width="1280" height="720"><section id="10">
 <h1>Door.scala</h1>
 <ul>
 <li>Translated from an Idris example</li>
-<li><strong>Enumerations</strong></li>
+<li><strong>Enums</strong></li>
 </ul>
 <pre><code class="language-scala"><svg data-marp-fitting="svg" data-marp-fitting-code><foreignObject><span data-marp-fitting-svg-content><span data-marp-fitting-svg-content-wrap>enum <span class="hljs-type">DoorState</span>
   <span class="hljs-keyword">case</span> <span class="hljs-type">IsOpen</span>()
@@ -145,7 +146,7 @@ given [<span class="hljs-type">A</span>, <span class="hljs-type">B</span>]: <spa
 <ul>
 <li><strong>Toplevel Definitions</strong>
 <ul>
-<li><code>type</code>, <code>val</code>, <code>var</code>, and <code>def</code> can be defined without the enclosing <code>trait</code>, <code>class</code>, or <code>object</code></li>
+<li><code>type</code>, <code>val</code>, <code>var</code>, and <code>def</code> can be defined without the enclosing <code>trait</code>, <code>class</code>, or <code>object</code>.</li>
 </ul>
 </li>
 </ul>
@@ -169,7 +170,7 @@ given [<span class="hljs-type">A</span>, <span class="hljs-type">B</span>]: <spa
 <pre><code class="language-scala"><svg data-marp-fitting="svg" data-marp-fitting-code><foreignObject><span data-marp-fitting-svg-content><span data-marp-fitting-svg-content-wrap><span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">write</span></span>(data: <span class="hljs-type">String</span>): (given <span class="hljs-type">FileService</span>) =&gt; <span class="hljs-type">Unit</span>
 </span></span></foreignObject></svg></code></pre>
 <ul>
-<li><strong>summon</strong> aka. &quot;the&quot;</li>
+<li><strong>summon</strong> aka. &quot;the&quot; or a better &quot;implicitly&quot;</li>
 </ul>
 <pre><code class="language-scala"><svg data-marp-fitting="svg" data-marp-fitting-code><foreignObject><span data-marp-fitting-svg-content><span data-marp-fitting-svg-content-wrap>summon[<span class="hljs-type">FileService</span>].write(data)
 </span></span></foreignObject></svg></code></pre>
@@ -191,7 +192,7 @@ given [<span class="hljs-type">A</span>, <span class="hljs-type">B</span>]: <spa
 <li>Typeclass Oriented Programming (TOP)
 <ul>
 <li>A better way to organize program</li>
-<li>A solution to <a href="https://en.wikipedia.org/wiki/Expression_problem">the Expression problem</a></li>
+<li>A solution to the <a href="https://en.wikipedia.org/wiki/Expression_problem">Expression problem</a></li>
 </ul>
 </li>
 <li><strong>Parameter Untupling</strong></li>
@@ -209,6 +210,12 @@ given [<span class="hljs-type">A</span>, <span class="hljs-type">B</span>]: <spa
 </span></span></foreignObject></svg></code></pre>
 </section>
 </foreignObject></svg><svg data-marpit-svg="" viewBox="0 0 1280 720"><foreignObject width="1280" height="720"><section id="15">
+<h1>Serde.scala</h1>
+<ul>
+<li>Serialization / deserialization</li>
+</ul>
+</section>
+</foreignObject></svg><svg data-marpit-svg="" viewBox="0 0 1280 720"><foreignObject width="1280" height="720"><section id="16">
 <h1>Kvs3.scala</h1>
 <ul>
 <li>Abstract effects
@@ -217,12 +224,13 @@ given [<span class="hljs-type">A</span>, <span class="hljs-type">B</span>]: <spa
 <li>Network IO effect</li>
 </ul>
 </li>
+<li>Kvs network client</li>
 <li><strong>Alias Givens</strong></li>
 </ul>
 <pre><code class="language-scala"><svg data-marp-fitting="svg" data-marp-fitting-code><foreignObject><span data-marp-fitting-svg-content><span data-marp-fitting-svg-content-wrap>given ioContextShift: <span class="hljs-type">ContextShift</span>[<span class="hljs-type">IO</span>] = <span class="hljs-type">IO</span>.contextShift(executorService)
 </span></span></foreignObject></svg></code></pre>
 </section>
-</foreignObject></svg><svg data-marpit-svg="" viewBox="0 0 1280 720"><foreignObject width="1280" height="720"><section id="16">
+</foreignObject></svg><svg data-marpit-svg="" viewBox="0 0 1280 720"><foreignObject width="1280" height="720"><section id="17">
 <h1>NetIO.scala</h1>
 <ul>
 <li>Socket IO effect</li>
@@ -231,13 +239,14 @@ given [<span class="hljs-type">A</span>, <span class="hljs-type">B</span>]: <spa
 <pre><code class="language-scala"><svg data-marp-fitting="svg" data-marp-fitting-code><foreignObject><span data-marp-fitting-svg-content><span data-marp-fitting-svg-content-wrap><span class="hljs-type">DataInputStream</span>(socket.getInputStream)
 </span></span></foreignObject></svg></code></pre>
 </section>
-</foreignObject></svg><svg data-marpit-svg="" viewBox="0 0 1280 720"><foreignObject width="1280" height="720"><section id="17">
-<h1>Serde.scala</h1>
+</foreignObject></svg><svg data-marpit-svg="" viewBox="0 0 1280 720"><foreignObject width="1280" height="720"><section id="18">
+<h1>KvsServer.scala</h1>
 <ul>
-<li>Serialization / deserialization</li>
+<li>Kvs network server</li>
+<li>Concurrency safe (Fiber, MVar)</li>
 </ul>
 </section>
-</foreignObject></svg><svg data-marpit-svg="" viewBox="0 0 1280 720"><foreignObject width="1280" height="720"><section id="18">
+</foreignObject></svg><svg data-marpit-svg="" viewBox="0 0 1280 720"><foreignObject width="1280" height="720"><section id="19">
 <h1>Q&amp;A</h1>
 <h2>That's all and thank you for your attention</h2>
 <p><img src="qrcode.png" alt="https://github.com/weihsiu/hereicome" /></p>

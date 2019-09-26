@@ -16,7 +16,7 @@ object NetIO
   given (given ContextShift[IO]): NetIO[IO]
     def (socket: Socket) readByte = block(socket.getInputStream.read.toByte)
     def (socket: Socket) readNBytes = block:
-      val dis = DataInputStream(socket.getInputStream)
+      val dis = DataInputStream(socket.getInputStream) // Creator Application
       val bs = Array.ofDim[Byte](dis.readInt)
       dis.readFully(bs)
       bs.toVector

@@ -1,13 +1,13 @@
 package hereicome.ifts
 
-type |=>[A, B] = (given A) => B
+type |=>[A, B] = (given A) => B // Implicit Function Type
 
 trait FileService
   def write(data: String): Unit =
     println(s"writing $data")
 object FileService
   def write(data: String): FileService |=> Unit =
-    summon[FileService].write(data)
+    summon[FileService].write(data) // summon function
 
 trait DatabaseService
   def insert(data: String): Int =
@@ -23,7 +23,7 @@ trait LogService(val prefix: String)
   def log(data: String): FileService |=> Unit =
     summon[FileService].write(s"log $prefix:$data")
 
-type AllServices = FileService & DatabaseService & NetworkService & LogService
+type AllServices = FileService & DatabaseService & NetworkService & LogService // Intersection Type
 
 def persist(name: String): FileService & DatabaseService |=> Int = (given ctx) =>
   import FileService._
@@ -35,9 +35,9 @@ def send(name: String): DatabaseService & NetworkService |=> Boolean = (given ct
   ctx.transmit(name)
 
 def process(name: String): AllServices |=> Boolean = (given ctx) =>
-  given mock: FileService, DatabaseService, NetworkService, LogService("mock")
-    export ctx._
-    override def write(data: String) = println(s"mock writing $data")
+  // given mockCtx: FileService, DatabaseService, NetworkService, LogService("mock")
+  //   export ctx._ // Export Clause
+  //   override def write(data: String) = println(s"mock writing $data")
   ctx.log(name)
   persist(name)
   send(name)
