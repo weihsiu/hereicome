@@ -15,34 +15,36 @@ object KvsServer extends IOApp
     import NetIO.given
     for
       b <- socket.readByte
-      _ <- b match {
-        case PUT => for
-          k <- socket.readNBytes
-          v <- socket.readNBytes
-          _ = println(s"put k = $k, v = $v")
-          kvs <- kvsM.take
-          _ = kvs.put(k, v)
-          _ <- kvsM.put(kvs)
-          _ <- socket.writeByte(OK)
-        yield ()
-        case GET => for
-          k <- socket.readNBytes
-          _ = println(s"get k = $k")
-          kvs <- kvsM.take
-          v = kvs.get(k)
-          _ <- kvsM.put(kvs)
-          _ <- if v.isEmpty then socket.writeByte(Ok_NONE) else socket.writeByte(OK_SOME) >> socket.writeNBytes(v.get)
-        yield ()
-        case DEL => for
-          k <- socket.readNBytes
-          _ = println(s"del k = $k")
-          kvs <- kvsM.take
-          _ = kvs.del(k)
-          _ <- kvsM.put(kvs)
-          _ <- socket.writeByte(OK)
-        yield ()
+      _ <- b match
+        case PUT =>
+          for
+            k <- socket.readNBytes
+            v <- socket.readNBytes
+            _ = println(s"put k = $k, v = $v")
+            kvs <- kvsM.take
+            _ = kvs.put(k, v)
+            _ <- kvsM.put(kvs)
+            _ <- socket.writeByte(OK)
+          yield ()
+        case GET =>
+          for
+            k <- socket.readNBytes
+            _ = println(s"get k = $k")
+            kvs <- kvsM.take
+            v = kvs.get(k)
+            _ <- kvsM.put(kvs)
+            _ <- if v.isEmpty then socket.writeByte(Ok_NONE) else socket.writeByte(OK_SOME) >> socket.writeNBytes(v.get)
+          yield ()
+        case DEL =>
+          for
+            k <- socket.readNBytes
+            _ = println(s"del k = $k")
+            kvs <- kvsM.take
+            _ = kvs.del(k)
+            _ <- kvsM.put(kvs)
+            _ <- socket.writeByte(OK)
+          yield ()
         case _ => socket.writeByte(FAIL)
-      }
       _ <- NetIO.block(socket.close)
     yield ()
 

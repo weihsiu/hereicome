@@ -15,16 +15,14 @@ object NetIO
   def block[A](thunk: => A)(given ContextShift[IO]): IO[A] = Blocker[IO].use(_.delay(thunk))
   given (given ContextShift[IO]): NetIO[IO]
     def (socket: Socket) readByte = block(socket.getInputStream.read.toByte)
-    def (socket: Socket) readNBytes = block {
+    def (socket: Socket) readNBytes = block:
       val dis = DataInputStream(socket.getInputStream)
       val bs = Array.ofDim[Byte](dis.readInt)
       dis.readFully(bs)
       bs.toVector
-    }
     def (socket: Socket) writeByte(byte: Byte): IO[Unit] = block(socket.getOutputStream.write(byte))
-    def (socket: Socket) writeNBytes(bytes: Vector[Byte]): IO[Unit] = block {
+    def (socket: Socket) writeNBytes(bytes: Vector[Byte]): IO[Unit] = block:
       val dos = DataOutputStream(socket.getOutputStream)
       dos.writeInt(bytes.length)
       val bs = bytes.toArray
       dos.write(bs, 0, bs.length)
-    }

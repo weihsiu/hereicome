@@ -42,8 +42,9 @@ if x < 0 then y else z
 while x > 0 do ???
 for x <- xs do println(x)
 ```
-- **Significant Indentation**
+- **Optional Braces**
   - No more curly braces (not really)
+  - Just indent the block that normally goes inside curly braces
 - Compiler switches allow to go back and forth
 ---
 # Select.scala
