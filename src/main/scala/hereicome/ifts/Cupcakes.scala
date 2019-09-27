@@ -13,6 +13,9 @@ trait DatabaseService
   def insert(data: String): Int =
     println(s"inserting $data")
     123
+object DatabaseService
+    def insert(data: String): DatabaseService |=> Int =
+      summon[DatabaseService].insert(data)
 
 trait NetworkService
   def transmit(data: String): Boolean = 
@@ -25,10 +28,10 @@ trait LogService(val prefix: String)
 
 type AllServices = FileService & DatabaseService & NetworkService & LogService // Intersection Type
 
-def persist(name: String): FileService & DatabaseService |=> Int = (given ctx) =>
-  import FileService._
+def persist(name: String): FileService & DatabaseService |=> Int = 
+  import FileService._, DatabaseService._
   write(name)
-  ctx.insert(name)
+  insert(name)
 
 def send(name: String): DatabaseService & NetworkService |=> Boolean = (given ctx) =>
   ctx.insert(name)

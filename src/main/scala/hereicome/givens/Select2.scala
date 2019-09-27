@@ -9,7 +9,7 @@ trait Selector[A, B]
   def value(x: A): B
 
 object Selector
-  given [A]: Selector[A, A]
+  given id[A]: Selector[A, A] // Named Given Instance
     def value(x: A) = x
 
   given Selector[RandomInt, Int]
@@ -36,8 +36,9 @@ object Select2
 @main def testSelect2() =
   import scala.collection.immutable._
   import Select2.given
+  import Selector.given
   assert(Vector(1, 2, 3).select(1) == Some(2))
   assert(ArraySeq(1, 2, 3).select(3) == None)
   assert(Map("a" -> 1, "b" -> 2, "c" -> 3).select("b") == Some(2))
-  assert(TreeMap("a" -> 1, "b" -> 2, "c" -> 3).select("d") == None)
+  assert(TreeMap("a" -> 1, "b" -> 2, "c" -> 3).select("d")(given id) == None) // explicit given parameter
   println(Vector(1, 2, 3).select(RandomInt(0, 3)))

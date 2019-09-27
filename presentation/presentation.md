@@ -75,6 +75,10 @@ opaque type RandomInt = (Int, Int)
 object RandomInt
   def apply(start: Int, end: Int): RandomInt = (start, end)
 ```
+- **Named Given Instances**
+```scala
+given id[A]: Selector[A, A]
+```
 - **Given Parameters**
 ```scala
 def (x: A) select (selector: B)(given Selector[B, C]): Option[Out]
@@ -170,6 +174,7 @@ given ioContextShift: ContextShift[IO] = IO.contextShift(executorService)
 ---
 # NetIO.scala
 - Socket IO effect
+  - Synchronous IO (Blocker thread pool)
 - **Creator Applications**
 ```scala
 DataInputStream(socket.getInputStream)

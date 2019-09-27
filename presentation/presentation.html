@@ -103,6 +103,11 @@ given [<span class="hljs-type">A</span>]: <span class="hljs-type">Select</span>[
   <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">apply</span></span>(start: <span class="hljs-type">Int</span>, end: <span class="hljs-type">Int</span>): <span class="hljs-type">RandomInt</span> = (start, end)
 </span></span></foreignObject></svg></code></pre>
 <ul>
+<li><strong>Named Given Instances</strong></li>
+</ul>
+<pre><code class="language-scala"><svg data-marp-fitting="svg" data-marp-fitting-code><foreignObject><span data-marp-fitting-svg-content><span data-marp-fitting-svg-content-wrap>given id[<span class="hljs-type">A</span>]: <span class="hljs-type">Selector</span>[<span class="hljs-type">A</span>, <span class="hljs-type">A</span>]
+</span></span></foreignObject></svg></code></pre>
+<ul>
 <li><strong>Given Parameters</strong></li>
 </ul>
 <pre><code class="language-scala"><svg data-marp-fitting="svg" data-marp-fitting-code><foreignObject><span data-marp-fitting-svg-content><span data-marp-fitting-svg-content-wrap><span class="hljs-function"><span class="hljs-keyword">def</span> </span>(x: <span class="hljs-type">A</span>) select (selector: <span class="hljs-type">B</span>)(given <span class="hljs-type">Selector</span>[<span class="hljs-type">B</span>, <span class="hljs-type">C</span>]): <span class="hljs-type">Option</span>[<span class="hljs-type">Out</span>]
@@ -233,7 +238,11 @@ given [<span class="hljs-type">A</span>, <span class="hljs-type">B</span>]: <spa
 </foreignObject></svg><svg data-marpit-svg="" viewBox="0 0 1280 720"><foreignObject width="1280" height="720"><section id="17">
 <h1>NetIO.scala</h1>
 <ul>
-<li>Socket IO effect</li>
+<li>Socket IO effect
+<ul>
+<li>Synchronous IO (Blocker thread pool)</li>
+</ul>
+</li>
 <li><strong>Creator Applications</strong></li>
 </ul>
 <pre><code class="language-scala"><svg data-marp-fitting="svg" data-marp-fitting-code><foreignObject><span data-marp-fitting-svg-content><span data-marp-fitting-svg-content-wrap><span class="hljs-type">DataInputStream</span>(socket.getInputStream)
