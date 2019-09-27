@@ -119,7 +119,7 @@ enum DoorState
 - Mimics Kotlin's "it"
 - **Implicit Function Types** (as parameter)
 ```scala
-def it[A](given p: GivenParameter[A]): A = p
+def apply[A, B](f: (given GivenParameter[A]) => B): A => B
 ```
 ---
 # Cupcakes.scala

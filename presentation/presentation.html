@@ -162,7 +162,7 @@ given [<span class="hljs-type">A</span>, <span class="hljs-type">B</span>]: <spa
 <li>Mimics Kotlin's &quot;it&quot;</li>
 <li><strong>Implicit Function Types</strong> (as parameter)</li>
 </ul>
-<pre><code class="language-scala"><svg data-marp-fitting="svg" data-marp-fitting-code><foreignObject><span data-marp-fitting-svg-content><span data-marp-fitting-svg-content-wrap><span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">it</span></span>[<span class="hljs-type">A</span>](given p: <span class="hljs-type">GivenParameter</span>[<span class="hljs-type">A</span>]): <span class="hljs-type">A</span> = p
+<pre><code class="language-scala"><svg data-marp-fitting="svg" data-marp-fitting-code><foreignObject><span data-marp-fitting-svg-content><span data-marp-fitting-svg-content-wrap><span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">apply</span></span>[<span class="hljs-type">A</span>, <span class="hljs-type">B</span>](f: (given <span class="hljs-type">GivenParameter</span>[<span class="hljs-type">A</span>]) =&gt; <span class="hljs-type">B</span>): <span class="hljs-type">A</span> =&gt; <span class="hljs-type">B</span>
 </span></span></foreignObject></svg></code></pre>
 </section>
 </foreignObject></svg><svg data-marpit-svg="" viewBox="0 0 1280 720"><foreignObject width="1280" height="720"><section id="12">
