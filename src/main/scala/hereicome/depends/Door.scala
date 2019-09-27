@@ -24,9 +24,9 @@ case object RingBell extends DoorCommand[IsClosed]
   type NextState = IsClosed
   val nextState = new IsClosed
 
-type DoCommand[S <: DoorState] = (c: DoorCommand[S]) => c.NextState // Dependent Function Types
+// Toplevel Definitions  
 
-// Toplevel Definitions
+type DoCommand[S <: DoorState] = (c: DoorCommand[S]) => c.NextState // Dependent Function Types
 
 def (state: S) after[S <: DoorState]: DoCommand[S] = command =>
   command.nextState

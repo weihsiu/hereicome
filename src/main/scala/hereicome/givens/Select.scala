@@ -16,9 +16,9 @@ object Select
       x.get(selector)
 
 @main def testSelect() = // Main Function
-  import scala.collection.immutable.ArraySeq
+  import scala.collection.immutable._
   import Select.given // Given Import
   assert(Vector(1, 2, 3).select(1) == Some(2))
   assert(ArraySeq(1, 2, 3).select(3) == None)
   assert(Map("a" -> 1, "b" -> 2, "c" -> 3).select("b") == Some(2))
-  assert(Map("a" -> 1, "b" -> 2, "c" -> 3).select("d") == None)
+  assert(TreeMap("a" -> 1, "b" -> 2, "c" -> 3).select("d") == None)

@@ -34,9 +34,10 @@ object Select2
       x.get(S.value(selector))
 
 @main def testSelect2() =
+  import scala.collection.immutable._
   import Select2.given
   assert(Vector(1, 2, 3).select(1) == Some(2))
-  assert(Vector(1, 2, 3).select(3) == None)
+  assert(ArraySeq(1, 2, 3).select(3) == None)
   assert(Map("a" -> 1, "b" -> 2, "c" -> 3).select("b") == Some(2))
-  assert(Map("a" -> 1, "b" -> 2, "c" -> 3).select("d") == None)
+  assert(TreeMap("a" -> 1, "b" -> 2, "c" -> 3).select("d") == None)
   println(Vector(1, 2, 3).select(RandomInt(0, 3)))
