@@ -8,7 +8,7 @@ object Select
   given [A]: Select[IndexedSeq[A], Int] // Anonymous Given Instance
     type Out = A
     def (x: IndexedSeq[A]) select (selector: Int): Option[A] =
-      if x.sizeIs > selector then Some(x(selector)) else None
+      if 0 <= selector && x.sizeIs > selector then Some(x(selector)) else None
 
   given [A, B]: Select[Map[A, B], A]
     type Out = B

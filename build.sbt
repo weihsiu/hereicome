@@ -6,7 +6,9 @@ scalaVersion := dottyVersion
 
 scalacOptions ++= Seq(
   "-language:implicitConversions",
-  "-Yindent-colons"
+  "-Yindent-colons",
+  // "-rewrite", "-indent",
+  // "-rewrite", "-noindent",
 )
 
 libraryDependencies ++= Seq(

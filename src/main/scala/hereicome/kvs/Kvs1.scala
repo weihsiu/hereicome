@@ -17,8 +17,10 @@ object Kvs1
         def (x: SimpleKvs) put (key: Vector[Byte], value: Vector[Byte]) = 
           x.del(key)
           x.kvs = (key, value) :: x.kvs
-        def (x: SimpleKvs) get (key: Vector[Byte]) = x.kvs.find(_._1 == key).map(_._2)
-        def (x: SimpleKvs) del (key: Vector[Byte]) = x.kvs = x.kvs.filterNot(_._1 == key)
+        def (x: SimpleKvs) get (key: Vector[Byte]) =
+          x.kvs.find(_._1 == key).map(_._2)
+        def (x: SimpleKvs) del (key: Vector[Byte]) =
+          x.kvs = x.kvs.filterNot(_._1 == key)
 
     opaque type MapKvs = mutable.Map[Vector[Byte], Vector[Byte]]
     object MapKvs
