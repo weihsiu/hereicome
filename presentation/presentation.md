@@ -43,7 +43,7 @@ while x > 0 do ???
 for x <- xs do println(x)
 ```
 - **Optional Braces**
-  - No more curly braces (not really)
+  - No more curly braces
   - Just indent the block that normally goes inside curly braces
 - Compiler switches allow to go back and forth
 ---
@@ -51,8 +51,8 @@ for x <- xs do println(x)
 - The ability to select something
 - **Anonymous Given Instances**
 ```scala
-given Select[List[Int], Int] { ??? }
-given [A]: Select[List[A], A] { ??? }
+given Select[List[Int], Int] { ??? } // implicit val in Scala 2
+given [A]: Select[List[A], A] { ??? } // implicit def in Scala 2
 ```
 - **Extension Methods**
 ```scala
@@ -132,6 +132,10 @@ def write(data: String): (given FileService) => Unit
 - **summon** aka. "the" or a better "implicitly"
 ```scala
 summon[FileService].write(data)
+```
+- **Trait Parameters**
+```scala
+trait LogService(val prefix: String)
 ```
 - **Intersection Types**
 ```scala

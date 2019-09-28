@@ -29,6 +29,7 @@ object Kvs2
 
   simpleKvs.putT(1, "one")
   simpleKvs.putT("two", 2)
+  val v: Option[String] = simpleKvs.getT(1)
   assert(simpleKvs.getT[V = String](1) == Some("one"))
   assert(simpleKvs.getT[V = Int]("two") == Some(2))
   assert(simpleKvs.getT[V = Int](3) == None)

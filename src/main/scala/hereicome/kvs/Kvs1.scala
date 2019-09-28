@@ -40,7 +40,7 @@ object Kvs1
   object KvsExt
     given KvsExt[SimpleKvs]
       def (x: SimpleKvs) getPrefixed (prefix: Vector[Byte]) =
-        x.kvs.filter((k, v) => k.startsWith(prefix, 0)) // parameter untupling
+        x.kvs.filter((k, v) => k.startsWith(prefix, 0)) // Parameter Untupling
     given KvsExt[MapKvs]
       def (x: MapKvs) getPrefixed (prefix: Vector[Byte]) =
         MapKvs.getMap(x).view.filterKeys(_.startsWith(prefix)).toList

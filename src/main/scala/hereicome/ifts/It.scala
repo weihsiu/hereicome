@@ -7,6 +7,8 @@ object It
 
 @main def testIt() =
   import It._
-  println(List(1, 2, 3).map(x => x + x))
+  println(List(1, 2, 3).map(x => "*" * x + x))
+  println(List(1, 2, 3).map(It((given p) => "*" * it(given p) + it(given p))))
+  println(List(1, 2, 3).map(It((given p) => "*" * it + it)))
   println(List(1, 2, 3).map(It("*" * it + it)))
   List("a", "b", "c").zip(1 to 10).foreach(It(println(s"${it._2} = ${it._1}")))

@@ -22,7 +22,7 @@ trait NetworkService
     println(s"transmitting $data")
     true
 
-trait LogService(val prefix: String)
+trait LogService(val prefix: String) // Trait Parameter
   def log(data: String): FileService |=> Unit =
     summon[FileService].write(s"log $prefix:$data")
 
@@ -42,7 +42,7 @@ def process(name: String): AllServices |=> Boolean = (given ctx) =>
   //   export ctx._ // Export Clause
   //   override def write(data: String) = println(s"mock writing $data")
   ctx.log(name)
-  persist(name)
+  val id = persist(name)
   send(name)
 
 @main def testCupcakes() =

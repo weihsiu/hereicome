@@ -19,7 +19,7 @@ object Kvs3
     opaque type MapKvs = mutable.Map[Vector[Byte], Vector[Byte]]
     object MapKvs
       def apply(): MapKvs = mutable.Map.empty[Vector[Byte], Vector[Byte]]
-      given Kvs[MapKvs, Id]
+      given Kvs[MapKvs, Id] // type Id[A] = A
         def (x: MapKvs) put (key: Vector[Byte], value: Vector[Byte]) = x.put(key, value)
         def (x: MapKvs) get (key: Vector[Byte]) = x.get(key)
         def (x: MapKvs) del (key: Vector[Byte]) = x.remove(key)
