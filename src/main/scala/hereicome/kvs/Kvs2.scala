@@ -33,3 +33,6 @@ object Kvs2
   assert(simpleKvs.getT[V = String](1) == Some("one"))
   assert(simpleKvs.getT[V = Int]("two") == Some(2))
   assert(simpleKvs.getT[V = Int](3) == None)
+
+  simpleKvs.putT("pair", (123, "hello")) // Serde[(A, B)]
+  assert(simpleKvs.getT[V = (Int, String)]("pair") == Some((123, "hello")))
