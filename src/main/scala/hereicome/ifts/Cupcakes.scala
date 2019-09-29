@@ -39,6 +39,9 @@ def send(name: String): DatabaseService & NetworkService |=> Boolean = (given ct
 
 def process(name: String): AllServices |=> Boolean = (given ctx) =>
   // given mockCtx: FileService, DatabaseService, NetworkService, LogService("mock")
+  //   // def insert(data: String) = ctx.insert(data)
+  //   // def transmit(data: String) = ctx.transmit(data)
+  //   // ...
   //   export ctx._ // Export Clause
   //   override def write(data: String) = println(s"mock writing $data")
   ctx.log(name)

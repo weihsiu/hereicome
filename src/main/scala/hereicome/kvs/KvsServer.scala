@@ -13,10 +13,11 @@ import Protocol._
 object KvsServer extends IOApp
   def process[A](socket: Socket, kvsM: MVar[IO, A])(given ContextShift[IO], Kvs[A, Id]): IO[Unit] =
     import NetIO.given
+    import Command._, Reply._
     for
       b <- socket.readByte
-      _ <- b match
-        case PUT =>
+      _ <- Command.values(b) match
+        case Put =>
           for
             k <- socket.readNBytes
             v <- socket.readNBytes
@@ -24,27 +25,26 @@ object KvsServer extends IOApp
             kvs <- kvsM.take
             _ = kvs.put(k, v)
             _ <- kvsM.put(kvs)
-            _ <- socket.writeByte(OK)
+            _ <- socket.writeByte(Ok)
           yield ()
-        case GET =>
+        case Get =>
           for
             k <- socket.readNBytes
             _ = println(s"get k = $k")
             kvs <- kvsM.take
             v = kvs.get(k)
             _ <- kvsM.put(kvs)
-            _ <- if v.isEmpty then socket.writeByte(Ok_NONE) else socket.writeByte(OK_SOME) >> socket.writeNBytes(v.get)
+            _ <- if v.isEmpty then socket.writeByte(OkNone) else socket.writeByte(OkSome) >> socket.writeNBytes(v.get)
           yield ()
-        case DEL =>
+        case Del =>
           for
             k <- socket.readNBytes
             _ = println(s"del k = $k")
             kvs <- kvsM.take
             _ = kvs.del(k)
             _ <- kvsM.put(kvs)
-            _ <- socket.writeByte(OK)
+            _ <- socket.writeByte(Ok)
           yield ()
-        case _ => socket.writeByte(FAIL)
       _ <- NetIO.block(socket.close)
     yield ()
 

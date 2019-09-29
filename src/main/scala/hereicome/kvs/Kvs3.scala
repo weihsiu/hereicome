@@ -29,30 +29,31 @@ object Kvs3
       given (given ContextShift[IO]): Kvs[KvsClient, IO]
         import NetIO.given
         import Protocol._
+        import Command._, Reply._
         def (x: KvsClient) put (key: Vector[Byte], value: Vector[Byte]) = for
           s <- NetIO.block(Socket(x.host, x.port))
-          _ <- s.writeByte(PUT)
+          _ <- s.writeByte(Put)
           _ <- s.writeNBytes(key)
           _ <- s.writeNBytes(value)
           r <- s.readByte
           _ <- NetIO.block(s.close)
-          _ = assert(r == OK)
+          _ = assert(Reply.values(r) == Ok)
         yield ()
         def (x: KvsClient) get (key: Vector[Byte]) = for
           s <- NetIO.block(Socket(x.host, x.port))
-          _ <- s.writeByte(GET)
+          _ <- s.writeByte(Get)
           _ <- s.writeNBytes(key)
           r <- s.readByte
-          v <- if (r == Ok_NONE) IO.pure(None) else s.readNBytes.map(Some(_))
+          v <- if Reply.values(r) == OkNone then IO.pure(None) else s.readNBytes.map(Some(_))
           _ <- NetIO.block(s.close)
         yield v
         def (x: KvsClient) del (key: Vector[Byte]) = for
           s <- NetIO.block(Socket(x.host, x.port))
-          _ <- s.writeByte(DEL)
+          _ <- s.writeByte(Del)
           _ <- s.writeNBytes(key)
           r <- s.readByte
           _ <- NetIO.block(s.close)
-          _ = assert(r == OK)
+          _ = assert(Reply.values(r) == Ok)
         yield ()
 
 @main def testKvs3() =

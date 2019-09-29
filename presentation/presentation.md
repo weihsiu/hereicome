@@ -97,7 +97,6 @@ new Actor[Int | String] { ??? }
 - The new and safer way to define implicit conversion
 - **Implicit Conversions**
 ```scala
-import scala.language.implicitConversions
 given [A, B]: Conversion[Either[A, B], A | B] = ???
 // abstract class Conversion[-T, +U] extends Function1[T, U]
 ```
@@ -180,6 +179,14 @@ simpleKvs.getT[V = String]("hello")
 - **Alias Givens**
 ```scala
 given ioContextShift: ContextShift[IO] = IO.contextShift(executorService)
+```
+---
+# Protocol.scala
+- Enums for Command and Reply
+- **Enums**
+```scala
+enum Command
+  case Put, Get, Del
 ```
 ---
 # NetIO.scala
