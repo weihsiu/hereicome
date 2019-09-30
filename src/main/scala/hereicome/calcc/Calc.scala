@@ -41,10 +41,10 @@ object Calcs
     def (x: Feet) toMeters = x * 0.3048
 
   // given {
-  //   def (n: Long) millimeters: Millimeters = n
-  //   def (n: Long) meters: Meters = n
+  //   def (n: Double) millimeters: Millimeters = n
+  //   def (n: Double) meters: Meters = n
   // }
-  given (n: Long) { // Collective Parameter
+  given (n: Double) { // Collective Parameter
     def millimeters: Millimeters = n
     def centimeters: Centimeters = n
     def meters: Meters = n
