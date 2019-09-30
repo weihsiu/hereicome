@@ -67,7 +67,25 @@ def (x: A) select (selector: B): Option[Out]
 import hereicome.Select.given
 ```
 ---
-<!---
+# Calc.scala
+- Typed length calculations
+- **Opaque Types Aliases**
+```scala
+opaque type Millimeters = Double
+```
+- **Given Instances with Collective Parameters**
+```scala
+given (n: Long) {
+  def millimeters: Millimeters = n
+  def centimeters: Centimeters = n
+}
+```
+- **Inline Definitions**
+```scala
+inline def +[B : Unit](y: B): Meters = x.toMeters + y.toMeters
+```
+---
+<!--
 # Select2.scala
 - On top of the ability to select something, abstract how the selection is done.
 - **Opaque Type Aliases**
@@ -85,7 +103,7 @@ given id[A]: Selector[A, A]
 def (x: A) select (selector: B)(given Selector[B, C]): Option[Out]
 ```
 ---
---->
+-->
 # Actor.scala
 - A minimum actor implementation taken shamelessly from @li_haoyi
 - **Union Types**
@@ -101,7 +119,7 @@ given [A, B]: Conversion[Either[A, B], A | B] = ???
 // abstract class Conversion[-T, +U] extends Function1[T, U]
 ```
 ---
-<!---
+<!--
 # Door.scala
 - Translated from an Idris example
 - **Enums**
@@ -117,8 +135,8 @@ enum DoorState
 - **Toplevel Definitions**
   - ```type```, ```val```, ```var```, and ```def``` can be defined without the enclosing ```trait```, ```class```, or ```object```.
 ---
---->
-<!---
+-->
+<!--
 # It.scala
 - Mimics Kotlin's "it"
 - **Implicit Function Types** (as parameter)
@@ -126,7 +144,7 @@ enum DoorState
 def apply[A, B](f: (given GivenParameter[A]) => B): A => B
 ```
 ---
---->
+-->
 # Cupcakes.scala
 - A minimum DI framework
 - New take on the infamous Cake Pattern in Scala 2 ;)

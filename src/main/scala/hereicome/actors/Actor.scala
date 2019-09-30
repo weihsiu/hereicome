@@ -24,8 +24,8 @@ trait Actor[A](implicit ec: ExecutionContext)
         else
           assert(scheduled)
           scheduled = false
-    
-@main def testActor(): Unit =
+
+@main def testActor(): Unit = 
   import scala.concurrent.ExecutionContext.Implicits.global
   val actor = new Actor[Int | String]: // Union Type
     def receive(msg: Int | String) = msg match
