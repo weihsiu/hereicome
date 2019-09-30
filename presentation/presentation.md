@@ -18,10 +18,13 @@ marp: false
 - What is Scala 3?
 - New syntax
 - Select.scala
+- Calc.scala
 - Actor.scala
 - Conversions.scala
+<!--
 - Door.scala
 - It.scala
+-->
 - Cupcakes.scala
 - Kvs.scala
 - Q&A
@@ -43,7 +46,7 @@ while x > 0 do ???
 for x <- xs do println(x)
 ```
 - **Optional Braces**
-  - No more curly braces
+  - No more curly braces (not really)
   - Just indent the block that normally goes inside curly braces
 - Compiler switches allow to go back and forth
 ---
@@ -82,7 +85,7 @@ given (n: Long) {
 ```
 - **Inline Definitions**
 ```scala
-inline def +[B : Unit](y: B): Meters = x.toMeters + y.toMeters
+inline def +[B : Units](y: B): Meters = x.toMeters + y.toMeters
 ```
 ---
 <!--
@@ -112,7 +115,7 @@ new Actor[Int | String] { ??? }
 ```
 ---
 # Conversions.scala
-- The new and safer way to define implicit conversion
+- A new way to define implicit conversion
 - **Implicit Conversions**
 ```scala
 given [A, B]: Conversion[Either[A, B], A | B] = ???
@@ -135,8 +138,6 @@ enum DoorState
 - **Toplevel Definitions**
   - ```type```, ```val```, ```var```, and ```def``` can be defined without the enclosing ```trait```, ```class```, or ```object```.
 ---
--->
-<!--
 # It.scala
 - Mimics Kotlin's "it"
 - **Implicit Function Types** (as parameter)
@@ -160,6 +161,8 @@ summon[FileService].write(data)
 ```scala
 trait LogService(val prefix: String)
 ```
+---
+# Cupcakes.scala (Cont.)
 - **Intersection Types**
 ```scala
 type AllServices = FileService & DatabaseService & NetworkService & LogService
@@ -200,7 +203,7 @@ given ioContextShift: ContextShift[IO] = IO.contextShift(executorService)
 ```
 ---
 # Protocol.scala
-- Enums for Command and Reply
+- Enums for network protocol Command and Reply
 - **Enums**
 ```scala
 enum Command
