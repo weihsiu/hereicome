@@ -6,32 +6,38 @@ object Calcs
 
   trait Unit[A] 
     def apply(n: Double): A
+    def (x: A) unitValue: Double
     def (x: A) toMeters: Double
     def (x: A) to[B](given TM: Unit[B]): B = TM(x.toMeters / TM(1).toMeters)
 
   opaque type Millimeters = Double // Opaque Type Alias
   given Unit[Millimeters]
     def apply(n: Double): Millimeters = n
+    def (x: Millimeters) unitValue = x
     def (x: Millimeters) toMeters = x / 1000
 
   opaque type Centimeters = Double
   given Unit[Centimeters]
     def apply(n: Double): Centimeters = n
+    def (x: Centimeters) unitValue = x
     def (x: Centimeters) toMeters = x / 100
 
   opaque type Meters = Double
   given Unit[Meters]
     def apply(n: Double): Meters = n
+    def (x: Meters) unitValue = x
     def (x: Meters) toMeters = x
 
   opaque type Inches = Double
   given Unit[Inches]
     def apply(n: Double): Inches = n
+    def (x: Inches) unitValue = x
     def (x: Inches) toMeters = x * 0.0254
     
   opaque type Feet = Double
   given Unit[Feet]
     def apply(n: Double): Feet = n
+    def (x: Feet) unitValue = x
     def (x: Feet) toMeters = x * 0.3048
 
   // given {
@@ -55,8 +61,8 @@ object Calcs
 
 @main def testCalcs() =
   import Calcs._, Calcs.given
-  println(2.meters * 10 + 3.millimeters)
-  println(10.meters.to[Feet])
-  println(10.feet.to[Inches])
-  println((5.feet + 9.inches).to[Centimeters])
+  println((2.meters * 10 + 3.millimeters).unitValue)
+  println(10.meters.to[Feet].unitValue)
+  println(10.feet.to[Inches].unitValue)
+  println((5.feet + 9.inches).to[Centimeters].unitValue)
   
