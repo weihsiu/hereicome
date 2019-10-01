@@ -10,8 +10,8 @@ given [A]: Conversion[Unit | A, Option[A]] =
   case () => None
   case x: A  => Some(x)
 
-@main def testConversions() =
+@main def testConversions() = {
   val e: Either[Int, Unit] = Left(456)
   val x: Int | Unit = e
   val y: Option[Int] = x
-  println(y)
+  println(y)}

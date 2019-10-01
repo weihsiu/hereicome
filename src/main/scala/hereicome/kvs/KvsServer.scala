@@ -14,11 +14,11 @@ object KvsServer extends IOApp
   def process[A](socket: Socket, kvsM: MVar[IO, A])(given ContextShift[IO], Kvs[A, Id]): IO[Unit] =
     import NetIO.given
     import Command._, Reply._
-    for
+    for {
       b <- socket.readByte
       _ <- Command.values(b) match
         case Put =>
-          for
+          for {
             k <- socket.readNBytes
             v <- socket.readNBytes
             _ = println(s"put k = $k, v = $v")
@@ -26,40 +26,46 @@ object KvsServer extends IOApp
             _ = kvs.put(k, v)
             _ <- kvsM.put(kvs)
             _ <- socket.writeByte(Ok)
+          }
           yield ()
         case Get =>
-          for
+          for {
             k <- socket.readNBytes
             _ = println(s"get k = $k")
             kvs <- kvsM.take
             v = kvs.get(k)
             _ <- kvsM.put(kvs)
             _ <- if v.isEmpty then socket.writeByte(OkNone) else socket.writeByte(OkSome) >> socket.writeNBytes(v.get)
+          }
           yield ()
         case Del =>
-          for
+          for {
             k <- socket.readNBytes
             _ = println(s"del k = $k")
             kvs <- kvsM.take
             _ = kvs.del(k)
             _ <- kvsM.put(kvs)
             _ <- socket.writeByte(Ok)
+          }
           yield ()
       _ <- NetIO.block(socket.close)
+    }
     yield ()
 
-  def listen[A](serverSocket: ServerSocket, kvs: MVar[IO, A])(given ContextShift[IO], Kvs[A, Id]): IO[Unit] = for
+  def listen[A](serverSocket: ServerSocket, kvs: MVar[IO, A])(given ContextShift[IO], Kvs[A, Id]): IO[Unit] = for {
     socket <- NetIO.block(serverSocket.accept)
     _ = println("listening...")
     _ <- process(socket, kvs).start(contextShift).void
     _ <- listen(serverSocket, kvs)
+  }
   yield ()
 
-  def run(args: List[String]): IO[ExitCode] =
+  def run(args: List[String]): IO[ExitCode] = {
     import Kvs3.Kvs.given
     given ioContextShift: ContextShift[IO] = IO.contextShift(ExecutionContext.fromExecutorService(Executors.newCachedThreadPool))
-    for
+    for {
       serverSocket <- NetIO.block(ServerSocket(3000))
       kvsM <- MVar.of[IO, Kvs.MapKvs](Kvs.MapKvs())
       _ <- listen(serverSocket, kvsM)
-    yield ExitCode.Success
+    }
+    yield ExitCode.Success  }

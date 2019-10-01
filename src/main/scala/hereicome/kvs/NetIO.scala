@@ -21,8 +21,8 @@ object NetIO
       dis.readFully(bs)
       bs.toVector
     def (socket: Socket) writeByte(byte: Byte): IO[Unit] = block(socket.getOutputStream.write(byte))
-    def (socket: Socket) writeNBytes(bytes: Vector[Byte]): IO[Unit] = block:
+    def (socket: Socket) writeNBytes(bytes: Vector[Byte]): IO[Unit] = block {
       val dos = DataOutputStream(socket.getOutputStream)
       dos.writeInt(bytes.length)
       val bs = bytes.toArray
-      dos.write(bs, 0, bs.length)
+      dos.write(bs, 0, bs.length)    }

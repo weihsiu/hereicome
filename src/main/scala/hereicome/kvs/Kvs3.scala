@@ -30,7 +30,7 @@ object Kvs3
         import NetIO.given
         import Protocol._
         import Command._, Reply._
-        def (x: KvsClient) put (key: Vector[Byte], value: Vector[Byte]) = for
+        def (x: KvsClient) put (key: Vector[Byte], value: Vector[Byte]) = for {
           s <- NetIO.block(Socket(x.host, x.port))
           _ <- s.writeByte(Put)
           _ <- s.writeNBytes(key)
@@ -38,31 +38,35 @@ object Kvs3
           r <- s.readByte
           _ <- NetIO.block(s.close)
           _ = assert(Reply.values(r) == Ok)
+        }
         yield ()
-        def (x: KvsClient) get (key: Vector[Byte]) = for
+        def (x: KvsClient) get (key: Vector[Byte]) = for {
           s <- NetIO.block(Socket(x.host, x.port))
           _ <- s.writeByte(Get)
           _ <- s.writeNBytes(key)
           r <- s.readByte
           v <- if Reply.values(r) == OkNone then IO.pure(None) else s.readNBytes.map(Some(_))
           _ <- NetIO.block(s.close)
+        }
         yield v
-        def (x: KvsClient) del (key: Vector[Byte]) = for
+        def (x: KvsClient) del (key: Vector[Byte]) = for {
           s <- NetIO.block(Socket(x.host, x.port))
           _ <- s.writeByte(Del)
           _ <- s.writeNBytes(key)
           r <- s.readByte
           _ <- NetIO.block(s.close)
           _ = assert(Reply.values(r) == Ok)
+        }
         yield ()
 
-@main def testKvs3() =
+@main def testKvs3() = {
   import Kvs3._
-  def putGetDel[A, F[_]](x: A)(given Kvs[A, F], FlatMap[F]): F[Unit] = for
+  def putGetDel[A, F[_]](x: A)(given Kvs[A, F], FlatMap[F]): F[Unit] = for {
     _ <- x.put(Vector(1, 2, 3), Vector(4, 5, 6))
     v <- x.get(Vector(1, 2, 3))
     _ = assert(v == Some(Vector(4, 5, 6)))
     _ <-x.del(Vector(1, 2, 3))
+  }
   yield ()
 
   val executorService = ExecutionContext.fromExecutorService(Executors.newCachedThreadPool)
@@ -74,4 +78,4 @@ object Kvs3
   val kvsClient = Kvs.KvsClient("localhost", 3000)
   putGetDel(kvsClient).unsafeRunSync
 
-  executorService.shutdown
+  executorService.shutdown}

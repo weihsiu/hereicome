@@ -19,6 +19,6 @@ object Serde
     def (x: (A, B)) serialize =
       val bs = SA.serialize(x._1)
       bs.length.serialize ++ bs ++ SB.serialize(x._2)
-    def deserialize(bs: Vector[Byte]) =
+    def deserialize(bs: Vector[Byte]) = {
       val len = summon[Serde[Int]].deserialize(bs.take(4))
-      (SA.deserialize(bs.drop(4).take(len)), SB.deserialize(bs.drop(4 + len)))
+      (SA.deserialize(bs.drop(4).take(len)), SB.deserialize(bs.drop(4 + len)))    }

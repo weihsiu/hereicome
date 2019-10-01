@@ -48,10 +48,10 @@ def process(name: String): AllServices |=> Boolean = (given ctx) =>
   persist(name)
   send(name)
 
-@main def testCupcakes() =
+@main def testCupcakes() = {
   class Universe extends FileService with DatabaseService with NetworkService with LogService("omg")
   given Universe
 
   persist("adrian")
   send("brian")
-  process("walter")
+  process("walter")}

@@ -18,7 +18,7 @@ object Kvs2
       def (x: A) delT[K] (key: K)(given Serde[K]) =
         x.del(key.serialize)
 
-@main def testKvs2() =
+@main def testKvs2() = {
   import Kvs2._
   import TypedKvs.given
   import Kvs.SimpleKvs.given
@@ -35,4 +35,4 @@ object Kvs2
   assert(simpleKvs.getT[V = Int](3) == None)
 
   simpleKvs.putT("pair", (123, "hello")) // Serde[(A, B)]
-  assert(simpleKvs.getT[V = (Int, String)]("pair") == Some((123, "hello")))
+  assert(simpleKvs.getT[V = (Int, String)]("pair") == Some((123, "hello")))}

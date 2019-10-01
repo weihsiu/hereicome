@@ -34,7 +34,7 @@ object RegexpF
         do i += 1
         r
 
-@main def testRegexpF() =
+@main def testRegexpF() = {
   import RegexpF._
   assert(matchRegexp("abc", "abc123"))
   assert(matchRegexp("123", "abc123"))
@@ -43,4 +43,4 @@ object RegexpF
   assert(matchRegexp(".*123", "abc123"))
   assert(matchRegexp(".*12", "abc123"))
   assert(!matchRegexp(".*12$", "abc123"))
-  assert(matchRegexp("^a.*3$", "abc123"))
+  assert(matchRegexp("^a.*3$", "abc123"))}

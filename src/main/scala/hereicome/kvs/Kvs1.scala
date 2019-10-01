@@ -58,7 +58,7 @@ object Kvs1
   val mapKvs = Kvs.MapKvs()
   putGetDel(mapKvs)
 
-@main def testKvsExt() =
+@main def testKvsExt() = {
   import Kvs1._
   def putGetPrefixedDel[A](x: A)(given Kvs[A], KvsExt[A]): Unit =
     x.put(Vector(1, 2, 3), Vector(4, 5, 6))
@@ -70,4 +70,4 @@ object Kvs1
   val simpleKvs = Kvs.SimpleKvs()
   putGetPrefixedDel(simpleKvs)
   val mapKvs = Kvs.MapKvs()
-  putGetPrefixedDel(mapKvs)
+  putGetPrefixedDel(mapKvs)}
