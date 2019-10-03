@@ -43,6 +43,7 @@ object Calcs
   // given {
   //   def (n: Double) millimeters: Millimeters = n
   //   def (n: Double) meters: Meters = n
+  //   ...
   // }
   given (n: Double) { // Collective Parameter
     def millimeters: Millimeters = n

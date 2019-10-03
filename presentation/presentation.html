@@ -47,6 +47,7 @@
 <li>Source code is mostly backward compatible with Scala 2</li>
 <li>Libraries from both Scala 2/3 can be used interchangeably</li>
 <li>VSCode with Dotty Language Server plugin</li>
+<li>Check out official <a href="https://dotty.epfl.ch/docs/index.html">Dotty documentation</a> for detail</li>
 </ul>
 </section>
 </foreignObject></svg><svg data-marpit-svg="" viewBox="0 0 1280 720"><foreignObject width="1280" height="720"><section id="5">
@@ -98,7 +99,11 @@ given [<span class="hljs-type">A</span>]: <span class="hljs-type">Select</span>[
 <h1>Calc.scala</h1>
 <ul>
 <li>Typed length calculations</li>
-<li><strong>Opaque Types Aliases</strong></li>
+<li><strong>Opaque Types Aliases</strong>
+<ul>
+<li><strong>newtype</strong> in Haskell</li>
+</ul>
+</li>
 </ul>
 <pre><code class="language-scala"><svg data-marp-fitting="svg" data-marp-fitting-code><foreignObject><span data-marp-fitting-svg-content><span data-marp-fitting-svg-content-wrap>opaque <span class="hljs-class"><span class="hljs-keyword">type</span> <span class="hljs-title">Millimeters</span> </span>= <span class="hljs-type">Double</span>
 </span></span></foreignObject></svg></code></pre>
@@ -136,7 +141,7 @@ given [<span class="hljs-type">A</span>]: <span class="hljs-type">Select</span>[
 </span></span></foreignObject></svg></code></pre>
 </section>
 </foreignObject></svg><svg data-marpit-svg="" viewBox="0 0 1280 720"><foreignObject width="1280" height="720"><section id="10">
-<h1>Cupcakes.scala</h1>
+<h1>Cupcakes.scala (1/2)</h1>
 <ul>
 <li>A minimum DI framework</li>
 <li>New take on the infamous Cake Pattern in Scala 2 ;)</li>
@@ -156,7 +161,7 @@ given [<span class="hljs-type">A</span>]: <span class="hljs-type">Select</span>[
 </span></span></foreignObject></svg></code></pre>
 </section>
 </foreignObject></svg><svg data-marpit-svg="" viewBox="0 0 1280 720"><foreignObject width="1280" height="720"><section id="11">
-<h1>Cupcakes.scala (Cont.)</h1>
+<h1>Cupcakes.scala (2/2)</h1>
 <ul>
 <li><strong>Intersection Types</strong></li>
 </ul>
@@ -187,6 +192,17 @@ given [<span class="hljs-type">A</span>]: <span class="hljs-type">Select</span>[
 <h1>Kvs2.scala</h1>
 <ul>
 <li>Typed key-value store</li>
+<li><strong>Given Parameters</strong></li>
+</ul>
+<pre><code class="language-scala"><svg data-marp-fitting="svg" data-marp-fitting-code><foreignObject><span data-marp-fitting-svg-content><span data-marp-fitting-svg-content-wrap><span class="hljs-function"><span class="hljs-keyword">def</span> </span>(x: <span class="hljs-type">A</span>) delT[<span class="hljs-type">K</span>] (key: <span class="hljs-type">K</span>)(given <span class="hljs-type">Serde</span>[<span class="hljs-type">K</span>]): <span class="hljs-type">Unit</span>
+simpleKvs.delT(<span class="hljs-string">"hello"</span>)(given stringSerde)
+</span></span></foreignObject></svg></code></pre>
+<ul>
+<li><strong>Given Constraints</strong></li>
+</ul>
+<pre><code class="language-scala"><svg data-marp-fitting="svg" data-marp-fitting-code><foreignObject><span data-marp-fitting-svg-content><span data-marp-fitting-svg-content-wrap>given [<span class="hljs-type">A</span>](given <span class="hljs-type">Kvs</span>[<span class="hljs-type">A</span>]): <span class="hljs-type">TypedKvs</span>[<span class="hljs-type">A</span>]
+</span></span></foreignObject></svg></code></pre>
+<ul>
 <li><strong>Named Type Arguments</strong></li>
 </ul>
 <pre><code class="language-scala"><svg data-marp-fitting="svg" data-marp-fitting-code><foreignObject><span data-marp-fitting-svg-content><span data-marp-fitting-svg-content-wrap>simpleKvs.getT[<span class="hljs-type">V</span> = <span class="hljs-type">String</span>](<span class="hljs-string">"hello"</span>)

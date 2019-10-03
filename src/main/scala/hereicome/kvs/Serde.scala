@@ -11,7 +11,7 @@ object Serde
     def (x: Int) serialize = ByteBuffer.allocate(4).putInt(x).array.toVector
     def deserialize(bs: Vector[Byte]) = ByteBuffer.wrap(bs.toArray).getInt
     
-  given Serde[String]
+  given stringSerde: Serde[String] 
     def (x: String) serialize = x.getBytes.toVector
     def deserialize(bs: Vector[Byte]) = String(bs.toArray)
 

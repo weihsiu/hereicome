@@ -36,6 +36,7 @@ marp: false
 - Source code is mostly backward compatible with Scala 2
 - Libraries from both Scala 2/3 can be used interchangeably
 - VSCode with Dotty Language Server plugin
+- Check out official [Dotty documentation](https://dotty.epfl.ch/docs/index.html) for detail 
 ---
 # New syntax
 - Optional
@@ -73,6 +74,7 @@ import hereicome.Select.given
 # Calc.scala
 - Typed length calculations
 - **Opaque Types Aliases**
+  - **newtype** in Haskell
 ```scala
 opaque type Millimeters = Double
 ```
@@ -146,7 +148,7 @@ def apply[A, B](f: (given GivenParameter[A]) => B): A => B
 ```
 ---
 -->
-# Cupcakes.scala
+# Cupcakes.scala (1/2)
 - A minimum DI framework
 - New take on the infamous Cake Pattern in Scala 2 ;)
 - **Implicit Function Types** (as return value)
@@ -162,7 +164,7 @@ summon[FileService].write(data)
 trait LogService(val prefix: String)
 ```
 ---
-# Cupcakes.scala (Cont.)
+# Cupcakes.scala (2/2)
 - **Intersection Types**
 ```scala
 type AllServices = FileService & DatabaseService & NetworkService & LogService
@@ -184,6 +186,15 @@ ps.foreach((k, v) => x.del(k))
 ---
 # Kvs2.scala
 - Typed key-value store
+- **Given Parameters**
+```scala
+def (x: A) delT[K] (key: K)(given Serde[K]): Unit
+simpleKvs.delT("hello")(given stringSerde)
+```
+- **Given Constraints**
+```scala
+given [A](given Kvs[A]): TypedKvs[A]
+```
 - **Named Type Arguments**
 ```scala
 simpleKvs.getT[V = String]("hello")
